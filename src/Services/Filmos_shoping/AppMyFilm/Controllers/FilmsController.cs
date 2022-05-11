@@ -1,4 +1,4 @@
-﻿using AppMyFilm.DAL.Entities.SQLEntities;
+﻿using AppMyFilm.DAL.EntitiesDTO;
 using AppMyFilm.DAL.Interfaces.SQLInterfaces.ISQLServices;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -87,7 +87,7 @@ namespace AppMyFilm.WEBAPI.Controllers
 
         [Route("Films/{id?}")]
         [HttpPut]
-        public async Task<IActionResult> Put(int id, [FromBody] SQLFilmsDTO filmsDto)
+        public async Task<IActionResult> Put(int id, [FromBody] SQLFilmsForAddDTO filmsDto)
         {
             try
             {

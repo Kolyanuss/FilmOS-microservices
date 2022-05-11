@@ -1,4 +1,5 @@
 ﻿using AppMyFilm.DAL.Entities.SQLEntities;
+using AppMyFilm.DAL.EntitiesDTO;
 using AppMyFilm.DAL.Exceptions;
 using AppMyFilm.DAL.Exceptions.Abstract;
 using AppMyFilm.DAL.Interfaces.SQLInterfaces.ISQLServices;
@@ -62,7 +63,7 @@ namespace AppMyFilm.DAL.Services.SQL_Services
             return await _UnitOfWork.FilmsRepo.Add(film);
         }
 
-        public async Task UpdateFilm(int id, SQLFilmsDTO filmDto)
+        public async Task UpdateFilm(int id, SQLFilmsForAddDTO filmDto)
         {
             if (filmDto == null)
             {

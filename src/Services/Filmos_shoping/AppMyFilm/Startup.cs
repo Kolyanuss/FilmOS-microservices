@@ -1,4 +1,3 @@
-using System;
 using AppMyFilm.DAL.Interfaces.SQLInterfaces.ISQLRepositories;
 using AppMyFilm.DAL.Interfaces.SQLInterfaces.ISQLServices;
 using AppMyFilm.DAL.Repositories.SQL_Repositories;
@@ -11,8 +10,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using SkillManagement.DataAccess.Infrastructure;
 using SkillManagement.DataAccess.Interfaces;
-
 using SkillManagement.DataAccess.sqlunitOfWork;
+using System;
 
 namespace AppMyFilm
 {
@@ -31,14 +30,12 @@ namespace AppMyFilm
             services.AddAutoMapper(typeof(Startup));
             services.AddControllers();
 
-            #region SQL repositories
-            
+            #region SQL repositories            
             services.AddTransient<ISQLFilmsRepository, SQLFilmsRepository>();
             services.AddTransient<ISQLBasketFilmsRepository, SQLBasketFilmsRepository>();
             #endregion
 
-            #region SQL services
-            
+            #region SQL services            
             services.AddTransient<ISQLFilmsService, SQLFilmsService>();
             services.AddTransient<ISQLBasketFilmsService, SQLBasketFilmsService>();
             #endregion
@@ -56,7 +53,7 @@ namespace AppMyFilm
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
-                    Title = "Films API",
+                    Title = "Filmos_Shopping_ADO.net",
                     Description = "A simple example ASP.NET Core Web API",
                     TermsOfService = new Uri("https://github.com/Kolyanuss"),
                     Contact = new OpenApiContact
@@ -83,13 +80,11 @@ namespace AppMyFilm
                 app.UseDeveloperExceptionPage();
             }
 
-
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
-
 
             app.UseHttpsRedirection();
 

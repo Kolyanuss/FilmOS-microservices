@@ -1,4 +1,5 @@
 ﻿using AppMyFilm.DAL.Entities.SQLEntities;
+using AppMyFilm.DAL.EntitiesDTO;
 using AutoMapper;
 using System;
 using System.Collections.Generic;
@@ -11,9 +12,9 @@ namespace AppMyFilm.WEBAPI
     {
         public AutoMapperProfile()
         {
-            CreateMap<SQLFilmsDTO, SQLFilms>();
-            CreateMap<SQLFilms, SQLFilmsDTO>();
-            CreateMap<SQLBasketFilmsDTO, SQLBasketFilms>();
+            CreateMap<SQLFilmsDTO, SQLFilms>().ReverseMap();
+            CreateMap<SQLFilmsForAddDTO, SQLFilms>();
+            CreateMap<SQLBasketFilmsDTO, SQLBasketFilms>().ReverseMap();
             
         }
     }

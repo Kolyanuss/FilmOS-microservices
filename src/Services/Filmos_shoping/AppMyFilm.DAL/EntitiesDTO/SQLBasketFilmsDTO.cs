@@ -1,10 +1,6 @@
-﻿using AppMyFilm.DAL.Interfaces.EntityInterfaces;
-using SkillManagement.DataAccess.Interfaces;
-using System;
-
-namespace AppMyFilm.DAL.Entities.SQLEntities
+﻿namespace AppMyFilm.DAL.EntitiesDTO
 {
-    public class SQLBasketFilmsDTO : IClearEntity
+    public class SQLBasketFilmsDTO
     {
         public long id_film { get; set; }
         public long id_user { get; set; }

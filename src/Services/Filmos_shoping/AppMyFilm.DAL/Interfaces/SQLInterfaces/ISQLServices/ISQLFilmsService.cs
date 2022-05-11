@@ -1,4 +1,5 @@
 ﻿using AppMyFilm.DAL.Entities.SQLEntities;
+using AppMyFilm.DAL.EntitiesDTO;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -16,7 +17,7 @@ namespace AppMyFilm.DAL.Interfaces.SQLInterfaces.ISQLServices
 
         Task<int> AddFilm(SQLFilmsDTO filmDto);
 
-        Task UpdateFilm(int id, SQLFilmsDTO filmDto);
+        Task UpdateFilm(int id, SQLFilmsForAddDTO filmDto);
 
         Task DeleteFilm(int id);
     }
