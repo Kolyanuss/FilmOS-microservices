@@ -32,12 +32,21 @@ namespace Filmos_Rating_CleanArchitecture.WebUI.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public async Task<IActionResult> Upsert(UpsertFilmCommand command)
+        public async Task<IActionResult> Insert(InsertFilmCommand command)
         {
             var id = await Mediator.Send(command);
+            return Ok(id);
+        }
 
+        [HttpPut]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        public async Task<IActionResult> Update(UpdateFilmCommand command)
+        {
+            var id = await Mediator.Send(command);
             return Ok(id);
         }
 
@@ -47,7 +56,6 @@ namespace Filmos_Rating_CleanArchitecture.WebUI.Controllers
         public async Task<IActionResult> Delete(string? id)
         {
             await Mediator.Send(new DeleteFilmsCommand { Id = id });
-
             return NoContent();
         }
     }

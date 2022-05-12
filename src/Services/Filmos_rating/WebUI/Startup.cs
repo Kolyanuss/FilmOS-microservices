@@ -2,6 +2,7 @@ using EventBus.Messages.Common;
 using Filmos_Rating_CleanArchitecture.Application;
 using Filmos_Rating_CleanArchitecture.Application.Common;
 using Filmos_Rating_CleanArchitecture.Persistence;
+using Filmos_Rating_CleanArchitecture.WebUI.EventBusConsumer.FilmsConsumer;
 using Filmos_Rating_CleanArchitecture.WebUI.EventBusConsumer;
 using MassTransit;
 using Microsoft.AspNetCore.Builder;
@@ -44,7 +45,8 @@ namespace Filmos_Rating_CleanArchitecture.WebUI
             // MassTransit-RabbitMQ Configuration
             services.AddMassTransit(config => {
 
-                config.AddConsumer<FilmsConsumer>();
+                config.AddConsumer<FilmsUpsertConsumer>();
+                config.AddConsumer<FilmsDeleteConsumer>();
                 config.AddConsumer<UsersConsumer>();
 
                 config.UsingRabbitMq((ctx, cfg) => {
@@ -52,12 +54,14 @@ namespace Filmos_Rating_CleanArchitecture.WebUI
                     //cfg.UseHealthCheck(ctx);
 
                     cfg.ReceiveEndpoint(EventBusConstants.FilmCheckoutQueue, c => {
-                        c.ConfigureConsumer<FilmsConsumer>(ctx);
+                        c.ConfigureConsumer<FilmsUpsertConsumer>(ctx);
+                        c.ConfigureConsumer<FilmsDeleteConsumer>(ctx);
                         c.ConfigureConsumer<UsersConsumer>(ctx);
                     });
                 });
             });
-            services.AddScoped<FilmsConsumer>();
+            services.AddScoped<FilmsUpsertConsumer>();
+            services.AddScoped<FilmsDeleteConsumer>();
             services.AddScoped<UsersConsumer>();
         }
 
