@@ -79,9 +79,11 @@ namespace EFCoreCodeFirstSampleWEBAPI.BLL.Services.SQLServices
             var films = _mapper.Map<Films>(filmsDto);
             await _wraper.Films.Add(films);
 
-            // send checkout event to rabbitmq
-            var eventMessage = _mapper.Map<FilmsDtoEvent>(filmsDto);
-            await _publishEndpoint.Publish<FilmsDtoEvent>(eventMessage);
+            // send add event to rabbitmq
+            var eventMessage = _mapper.Map<FilmsUpsertDtoEvent>(filmsDto);
+            eventMessage.Id_Film = films.Id;
+            eventMessage._is_add = true;
+            await _publishEndpoint.Publish<FilmsUpsertDtoEvent>(eventMessage);
 
             return _mapper.Map<FilmsDTO>(films);
         }
@@ -103,6 +105,12 @@ namespace EFCoreCodeFirstSampleWEBAPI.BLL.Services.SQLServices
             }
             _mapper.Map(filmsDto, ToUpdate);
             _wraper.Films.Update(ToUpdate);
+
+            // send update event to rabbitmq
+            var eventMessage = _mapper.Map<FilmsUpsertDtoEvent>(filmsDto);
+            eventMessage.Id_Film = id;
+            eventMessage._is_add = false;
+            await _publishEndpoint.Publish<FilmsUpsertDtoEvent>(eventMessage);
         }
 
         public async Task Delete(int id)
@@ -113,6 +121,10 @@ namespace EFCoreCodeFirstSampleWEBAPI.BLL.Services.SQLServices
                 throw new FilmsNotFoundException(id);
             }
             _wraper.Films.Delete(films);
+
+            // send delete event to rabbitmq
+            var eventMessage = new FilmsDeleteDtoEvent() { Id_Film = id };
+            await _publishEndpoint.Publish<FilmsDeleteDtoEvent>(eventMessage);
         }
     }
 }

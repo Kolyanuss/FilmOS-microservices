@@ -26,7 +26,7 @@ namespace EFCoreCodeFirstSampleWEBAPI
             CreateMap<FilmsUsers, FilmsUsers_DetailDTO>();
             CreateMap<FilmsUsersDTO, FilmsUsers>();
 
-            CreateMap<FilmsForCreationDto, FilmsDtoEvent>().ReverseMap();
+            CreateMap<FilmsForCreationDto, FilmsUpsertDtoEvent>();
             CreateMap<UserForCreationDto, UsersDtoEvent>().ReverseMap();
         }
     }
