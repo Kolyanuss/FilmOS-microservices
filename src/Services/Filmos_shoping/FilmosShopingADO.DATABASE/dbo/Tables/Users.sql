@@ -1,8 +1,10 @@
 ﻿CREATE TABLE [dbo].[Users] (
-    [id]        INT            IDENTITY (1, 1) NOT NULL,
+    [Id]        INT            IDENTITY (1, 1) NOT NULL,
     [user_name] NVARCHAR (MAX) NOT NULL,
     [password]  NVARCHAR (MAX) NOT NULL,
     [is_admin]  BIT            NOT NULL,
-    CONSTRAINT [PK_Users] PRIMARY KEY CLUSTERED ([id] ASC)
+    [id_purchased_subscription] INT NULL, 
+    CONSTRAINT [PK_Users] PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_Users_Subscriptions] FOREIGN KEY ([id_purchased_subscription]) REFERENCES [dbo].[Type_subscriptions] ([id])
 );
 
