@@ -3,6 +3,7 @@ using EventBus.Messages.Events;
 using Filmos_Rating_CleanArchitecture.Application.Film.Commands.UpsertFilms;
 using Filmos_Rating_CleanArchitecture.Application.Film.Commands.DeleteFilms;
 using Filmos_Rating_CleanArchitecture.Application.User.Commands.UpsertUsers;
+using Filmos_Rating_CleanArchitecture.Application.User.Commands.DeleteUsers;
 
 namespace Filmos_Rating_CleanArchitecture.WebUI.EventBusConsumer
 {
@@ -20,8 +21,13 @@ namespace Filmos_Rating_CleanArchitecture.WebUI.EventBusConsumer
                 .ForMember(dest => dest.Id_sql, opt => opt.MapFrom(src => src.Id_Film));
 
             // users
-            CreateMap<UsersDtoEvent, UpsertUsersCommand>()
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id_User));
+            CreateMap<UsersUpsertDtoEvent, UpdateUserCommand>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
+                .ForMember(dest => dest._id_sql_user, opt => opt.MapFrom(src => src.Id_User));
+            CreateMap<UsersUpsertDtoEvent, InsertUserCommand>()
+                .ForMember(dest => dest._id_sql_user, opt => opt.MapFrom(src => src.Id_User));
+            CreateMap<UsersDeleteDtoEvent, DeleteUserCommand>()
+                .ForMember(dest => dest.Id_sql, opt => opt.MapFrom(src => src.Id_User));
         }
     }
 }
