@@ -10,6 +10,5 @@ namespace EventBus.Messages.Events
         public string Country { get; set; }
         public int FKDescriptionId { get; set; }
         public bool _is_add { get; set; }
-
     }
 }

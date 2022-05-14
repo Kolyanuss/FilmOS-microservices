@@ -1,10 +1,11 @@
 ﻿namespace EventBus.Messages.Events
 {
-    public class UsersDtoEvent : IntegrationBaseEvent
+    public class UsersUpsertDtoEvent : IntegrationBaseEvent
     {
-        public int? Id_User { get; set; } = null;
+        public int Id_User { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
         public bool IsAdmin { get; set; }
+        public bool _is_add { get; set; }
     }
 }
