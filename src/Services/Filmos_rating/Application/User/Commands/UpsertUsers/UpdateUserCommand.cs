@@ -9,17 +9,18 @@ using System.Threading.Tasks;
 
 namespace Filmos_Rating_CleanArchitecture.Application.User.Commands.UpsertUsers
 {
-    public class UpsertUsersCommand : IRequest<string?>
+    public class UpdateUserCommand : IRequest<string?>
     {
         public string? Id { get; set; }
+        public int _id_sql_user { get; set; }
         public string User_Name { get; set; }
         public bool Is_admin { get; set; }
 
-        public class UpsertUsersCommandHandler : IRequestHandler<UpsertUsersCommand, string?>
+        public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, string?>
         {
             private readonly IMongoCollection<Users> _collection;
 
-            public UpsertUsersCommandHandler(IOptions<FilmosDatabaseSettings> dbSettings)
+            public UpdateUserCommandHandler(IOptions<FilmosDatabaseSettings> dbSettings)
             {
                 var mongoClient = new MongoClient(dbSettings.Value.ConnectionString);
 
@@ -28,7 +29,7 @@ namespace Filmos_Rating_CleanArchitecture.Application.User.Commands.UpsertUsers
                 _collection = mongoDatabase.GetCollection<Users>("Users");
             }
 
-            public async Task<string?> Handle(UpsertUsersCommand request, CancellationToken cancellationToken)
+            public async Task<string?> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
             {
                 if (request.User_Name == null)
                 {
@@ -37,23 +38,24 @@ namespace Filmos_Rating_CleanArchitecture.Application.User.Commands.UpsertUsers
 
                 Users entity;
 
-                if (request.Id == "" || request.Id == null)
+                if (request.Id != null && request.Id.Length != 0)
                 {
-                    entity = new Users();
-                    entity.User_name = request.User_Name;
-                    entity.Is_admin = request.Is_admin;
-                    await _collection.InsertOneAsync(entity);
+                    entity = await _collection.Find(x => x.Id_user == request.Id).FirstOrDefaultAsync();
                 }
                 else
                 {
-                    entity = await _collection.Find(x => x.Id_user == request.Id).FirstOrDefaultAsync();
-                    if (entity == null)
-                    {
-                        throw new NotFoundException(nameof(Users), request.Id);
-                    }
-                    entity.User_name = request.User_Name;
-                    await _collection.ReplaceOneAsync(x => x.Id_user == request.Id, entity);
+                    entity = await _collection.Find(x => x._id_sql_user == request._id_sql_user).FirstOrDefaultAsync();
                 }
+
+                if (entity == null)
+                {
+                    throw new NotFoundException(nameof(Users), request.Id);
+                }
+                entity.User_name = request.User_Name;
+                entity.Is_admin = request.Is_admin;
+                entity._id_sql_user = request._id_sql_user;
+
+                await _collection.ReplaceOneAsync(x => x.Id_user == entity.Id_user, entity);
 
                 return entity.Id_user;
             }
