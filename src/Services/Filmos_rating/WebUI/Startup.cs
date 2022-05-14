@@ -1,9 +1,8 @@
 using EventBus.Messages.Common;
 using Filmos_Rating_CleanArchitecture.Application;
 using Filmos_Rating_CleanArchitecture.Application.Common;
-using Filmos_Rating_CleanArchitecture.Persistence;
 using Filmos_Rating_CleanArchitecture.WebUI.EventBusConsumer.FilmsConsumer;
-using Filmos_Rating_CleanArchitecture.WebUI.EventBusConsumer;
+using Filmos_Rating_CleanArchitecture.WebUI.EventBusConsumer.UsersConsumer;
 using MassTransit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -47,7 +46,8 @@ namespace Filmos_Rating_CleanArchitecture.WebUI
 
                 config.AddConsumer<FilmsUpsertConsumer>();
                 config.AddConsumer<FilmsDeleteConsumer>();
-                config.AddConsumer<UsersConsumer>();
+                config.AddConsumer<UsersUpsertConsumer>();
+                config.AddConsumer<UsersDeleteConsumer>();
 
                 config.UsingRabbitMq((ctx, cfg) => {
                     cfg.Host(Configuration["EventBusSettings:HostAddress"]);
@@ -56,13 +56,18 @@ namespace Filmos_Rating_CleanArchitecture.WebUI
                     cfg.ReceiveEndpoint(EventBusConstants.FilmCheckoutQueue, c => {
                         c.ConfigureConsumer<FilmsUpsertConsumer>(ctx);
                         c.ConfigureConsumer<FilmsDeleteConsumer>(ctx);
-                        c.ConfigureConsumer<UsersConsumer>(ctx);
+                    });
+
+                    cfg.ReceiveEndpoint(EventBusConstants.UserCheckoutQueue, c => {
+                        c.ConfigureConsumer<UsersUpsertConsumer>(ctx);
+                        c.ConfigureConsumer<UsersDeleteConsumer>(ctx);
                     });
                 });
             });
             services.AddScoped<FilmsUpsertConsumer>();
             services.AddScoped<FilmsDeleteConsumer>();
-            services.AddScoped<UsersConsumer>();
+            services.AddScoped<UsersUpsertConsumer>();
+            services.AddScoped<UsersDeleteConsumer>();
         }
 
 
