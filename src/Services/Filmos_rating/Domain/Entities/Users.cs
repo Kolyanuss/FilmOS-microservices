@@ -10,5 +10,6 @@ namespace Filmos_Rating_CleanArchitecture.Domain.Entities
         public string? Id_user { get; set; }
         public string User_name { get; set; }
         public bool Is_admin { get; set; }
+        public int _id_sql_user { get; set; }
     }
 }

@@ -9,6 +9,7 @@ namespace Filmos_Rating_CleanArchitecture.Application.User.Queries.GetUsersList
         public string? Id { get; set; }
         public string Name { get; set; }
         public bool Is_admin { get; set; }
+        public int _id_sql_user { get; set; }
 
         public void Mapping(Profile profile)
         {
