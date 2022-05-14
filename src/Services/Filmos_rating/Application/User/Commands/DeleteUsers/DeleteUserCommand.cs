@@ -9,11 +9,12 @@ using System.Threading.Tasks;
 
 namespace Filmos_Rating_CleanArchitecture.Application.User.Commands.DeleteUsers
 {
-    public class DeleteUsersCommand : IRequest
+    public class DeleteUserCommand : IRequest
     {
         public string? Id { get; set; }
+        public int? Id_sql { get; set; }
 
-        public class DeleteUsersCommandHandler : IRequestHandler<DeleteUsersCommand>
+        public class DeleteUsersCommandHandler : IRequestHandler<DeleteUserCommand>
         {
             private readonly IMongoCollection<Users> _collection;
 
@@ -26,17 +27,24 @@ namespace Filmos_Rating_CleanArchitecture.Application.User.Commands.DeleteUsers
                 _collection = mongoDatabase.GetCollection<Users>("Users");
             }
 
-            public async Task<Unit> Handle(DeleteUsersCommand request, CancellationToken cancellationToken)
+            public async Task<Unit> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
             {
-                var entity = await _collection.Find(x => x.Id_user == request.Id).FirstOrDefaultAsync();
-                //var entity = await _collection.FindAsync(x => x.Id_film == request.Id);
+                Users entity = null;
+                if (request.Id_sql.HasValue)
+                {
+                    entity = await _collection.Find(x => x._id_sql_user == request.Id_sql).FirstOrDefaultAsync();
+                }
+                else
+                {
+                    entity = await _collection.Find(x => x.Id_user == request.Id).FirstOrDefaultAsync();
+                }
 
                 if (entity == null)
                 {
                     throw new NotFoundException(nameof(Users), request.Id);
                 }
 
-                var filter = Builders<Users>.Filter.Eq(x => x.Id_user, request.Id);
+                var filter = Builders<Users>.Filter.Eq(x => x.Id_user, entity.Id_user);
                 await _collection.DeleteOneAsync(filter);
                 return Unit.Value;
             }
