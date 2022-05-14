@@ -1,3 +1,5 @@
+using EventBus.Messages.Common;
+using MassTransit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -11,6 +13,7 @@ using Shoping.DAL.Interfaces.SQLInterfaces.ISQLServices;
 using Shoping.DAL.Repositories.SQL_Repositories;
 using Shoping.DAL.Services.SQL_Services;
 using Shoping.DAL.sqlunitOfWork;
+using Shoping.WEBAPI.EventBusConsumer.FilmsConsumer;
 
 namespace Shoping.WEBAPI
 {
@@ -49,6 +52,25 @@ namespace Shoping.WEBAPI
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Shoping.WEBAPI", Version = "v1" });
             });
+
+            // MassTransit-RabbitMQ Configuration
+            services.AddMassTransit(config => {
+
+                config.AddConsumer<FilmsUpsertConsumer>();
+                config.AddConsumer<FilmsDeleteConsumer>();
+
+                config.UsingRabbitMq((ctx, cfg) => {
+                    cfg.Host(Configuration["EventBusSettings:HostAddress"]);
+                    //cfg.UseHealthCheck(ctx);
+
+                    cfg.ReceiveEndpoint(EventBusConstants.FilmCheckoutQueue, c => {
+                        c.ConfigureConsumer<FilmsUpsertConsumer>(ctx);
+                        c.ConfigureConsumer<FilmsDeleteConsumer>(ctx);
+                    });
+                });
+            });
+            services.AddScoped<FilmsUpsertConsumer>();
+            services.AddScoped<FilmsDeleteConsumer>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
