@@ -41,7 +41,7 @@ namespace Filmos_Rating_CleanArchitecture.WebUI.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public async Task<IActionResult> Upsert(UpsertUsersCommand command)
+        public async Task<IActionResult> Upsert(UpdateUserCommand command)
         {
             var id = await Mediator.Send(command);
 
@@ -53,7 +53,7 @@ namespace Filmos_Rating_CleanArchitecture.WebUI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(string? id)
         {
-            await Mediator.Send(new DeleteUsersCommand { Id = id });
+            await Mediator.Send(new DeleteUserCommand { Id = id });
 
             return NoContent();
         }
