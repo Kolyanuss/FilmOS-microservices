@@ -60,9 +60,11 @@ namespace EFCoreCodeFirstSampleWEBAPI.BLL.Services.SQLServices
             var user = _mapper.Map<User>(userdto);
             await _wrapper.User.Add(user);
 
-            // send checkout event to rabbitmq
-            var eventMessage = _mapper.Map<UsersDtoEvent>(userdto);
-            await _publishEndpoint.Publish<UsersDtoEvent>(eventMessage);
+            // send insert event to rabbitmq
+            var eventMessage = _mapper.Map<UsersUpsertDtoEvent>(userdto);
+            eventMessage.Id_User = user.Id;
+            eventMessage._is_add = true;
+            await _publishEndpoint.Publish(eventMessage);
 
             return _mapper.Map<UserDTO>(user);
         }
@@ -84,6 +86,12 @@ namespace EFCoreCodeFirstSampleWEBAPI.BLL.Services.SQLServices
             }
             _mapper.Map(userdto, ToUpdate);
             _wrapper.User.Update(ToUpdate);
+
+            // send update event to rabbitmq
+            var eventMessage = _mapper.Map<UsersUpsertDtoEvent>(userdto);
+            eventMessage.Id_User = id;
+            eventMessage._is_add = false;
+            await _publishEndpoint.Publish(eventMessage);
         }
 
         public async Task Delete(int id)
@@ -94,6 +102,10 @@ namespace EFCoreCodeFirstSampleWEBAPI.BLL.Services.SQLServices
                 throw new UsersNotFoundException(id);
             }
             _wrapper.User.Delete(user);
+
+            // send delete event to rabbitmq
+            var eventMessage = new UsersDeleteDtoEvent() { Id_User = id };
+            await _publishEndpoint.Publish(eventMessage);
         }
     }
 }
