@@ -43,6 +43,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Filmos_basket", "Filmos_bas
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Basket.API", "src\Services\Filmos_basket\Basket.API\Basket.API.csproj", "{A1D2A874-728F-4399-A2AB-967F07B2447C}"
 EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{F2E5965C-E0F5-4903-928F-3AE2CE8773D8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -103,6 +105,10 @@ Global
 		{A1D2A874-728F-4399-A2AB-967F07B2447C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1D2A874-728F-4399-A2AB-967F07B2447C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A1D2A874-728F-4399-A2AB-967F07B2447C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2E5965C-E0F5-4903-928F-3AE2CE8773D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2E5965C-E0F5-4903-928F-3AE2CE8773D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2E5965C-E0F5-4903-928F-3AE2CE8773D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2E5965C-E0F5-4903-928F-3AE2CE8773D8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

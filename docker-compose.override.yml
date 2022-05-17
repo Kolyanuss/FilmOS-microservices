@@ -1,0 +1,17 @@
+version: '3.4'
+
+services:
+  filmos-shoping-redis2:
+    container_name: filmos-shoping-redis2
+    restart: always    
+    ports:
+        - "6379:6379"
+
+  basket.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "CacheSettings:ConnectionString=filmos-shoping-redis2:6379"
+    depends_on:
+      - filmos-shoping-redis2
+    ports:
+      - "8001:80"
