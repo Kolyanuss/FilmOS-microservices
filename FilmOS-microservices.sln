@@ -41,7 +41,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shoping.WEBAPI", "src\Servi
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Filmos_basket", "Filmos_basket", "{F848E6E1-0AB2-4492-90CF-8651995C3789}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Basket.API", "src\Services\Filmos_basket\Basket.API\Basket.API.csproj", "{A1D2A874-728F-4399-A2AB-967F07B2447C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Basket.API", "src\Services\Filmos_basket\Basket.API\Basket.API.csproj", "{A1D2A874-728F-4399-A2AB-967F07B2447C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
