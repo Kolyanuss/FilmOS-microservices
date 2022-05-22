@@ -1,17 +1,56 @@
 version: '3.4'
 
 services:
-  filmos-shoping-redis2:
-    container_name: filmos-shoping-redis2
+  redisdb:
+    container_name: redisdb
     restart: always    
     ports:
         - "6379:6379"
 
+  mongodb:
+    container_name: mongodb
+    restart: always
+    ports:
+        - "27017:27017"
+
+
+  rabbitmq:
+    container_name: RabbitMQ
+    restart: always
+    ports:
+        - "5672:5672"
+        - "15672:15672"
+
+
   basket.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - "CacheSettings:ConnectionString=filmos-shoping-redis2:6379"
+      - "CacheSettings:ConnectionString=redisdb:6379"
     depends_on:
-      - filmos-shoping-redis2
+      - redisdb
     ports:
       - "8001:80"
+
+  rating.api:
+    container_name: rating.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "FilmosDatabase:ConnectionString=mongodb://mongodb:27017"
+      - "EventBusSettings:HostAddress=amqp://guest:guest@rabbitmq:5672"
+    depends_on:
+      - mongodb
+      - rabbitmq
+    ports:
+      - "8002:80"
+    volumes:
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+  ocelotapigw:
+    container_name: OcelotAPIGW
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      - basket.api
+      - rating.api
+    ports:
+      - "8010:80"

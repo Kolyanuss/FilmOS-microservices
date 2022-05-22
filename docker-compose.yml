@@ -1,11 +1,31 @@
 version: '3.4'
 
 services:
-  filmos-shoping-redis2:
+  redisdb:
     image: redis
+
+  mongodb:
+    image: mongo
+
+  rabbitmq:
+    image: rabbitmq:3-management
+
 
   basket.api:
     image: ${DOCKER_REGISTRY-}basketapi
     build:
       context: .
       dockerfile: src/Services/Filmos_basket/Basket.API/Dockerfile
+
+  rating.api:
+    image: ${DOCKER_REGISTRY-}rating.api
+    build:
+      context: .
+      dockerfile: src/Services/Filmos_rating/WebUI/Dockerfile
+
+  ocelotapigw:
+    image: ${DOCKER_REGISTRY-}ocelotapigw
+    build:
+      context: .
+      dockerfile: src/ApiGateways/OcelotApiGw/Dockerfile
+
