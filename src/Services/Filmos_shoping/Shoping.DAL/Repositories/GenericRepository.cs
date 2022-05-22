@@ -60,7 +60,7 @@ namespace Shoping.DAL.Core
             var stringOfProperties = string.Join(", ", columns.Select(e => "@" + e));
             var query = "SP_InsertRecordToTable";
 
-            using (var db = _connectionFactory.GetSqlConnection)
+            using (var db = _connectionFactory.GetSqlAsyncConnection)
             {
                 var InsertionStatement = await db.QuerySingleOrDefaultAsync<string>(
                     sql: query,
