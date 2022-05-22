@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using Xunit;
 
-namespace EFCoreCodeFirstSampleWEBAPI.UnitTests
+namespace EFCoreCodeFirstSampleWEBAPI.UnitTests.Controller
 {
     public class FilmsControllerTest
     {

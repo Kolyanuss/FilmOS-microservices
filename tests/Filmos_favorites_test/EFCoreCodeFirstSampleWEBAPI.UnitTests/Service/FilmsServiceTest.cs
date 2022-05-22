@@ -3,15 +3,14 @@ using EFCoreCodeFirstSampleWEBAPI.BLL.DataTransferObjects;
 using EFCoreCodeFirstSampleWEBAPI.BLL.Exceptions;
 using EFCoreCodeFirstSampleWEBAPI.BLL.Exceptions.Abstract;
 using EFCoreCodeFirstSampleWEBAPI.BLL.Services.SQLServices;
-using EFCoreCodeFirstSampleWEBAPI.BLL.UnitTests.Mocks;
 using EFCoreCodeFirstSampleWEBAPI.DAL.Models;
-using EventBus.Messages.Events;
+using EFCoreCodeFirstSampleWEBAPI.UnitTests.Service.Mocks;
 using MassTransit;
 using Moq;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace EFCoreCodeFirstSampleWEBAPI.BLL.UnitTests
+namespace EFCoreCodeFirstSampleWEBAPI.UnitTests.Service
 {
     public class FilmsServiceTest
     {

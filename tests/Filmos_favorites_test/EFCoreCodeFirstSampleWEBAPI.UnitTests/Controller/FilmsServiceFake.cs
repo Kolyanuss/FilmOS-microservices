@@ -7,10 +7,9 @@ using EFCoreCodeFirstSampleWEBAPI.DAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace EFCoreCodeFirstSampleWEBAPI.UnitTests
+namespace EFCoreCodeFirstSampleWEBAPI.UnitTests.Controller
 {
     public class FilmsServiceFake : IFilmsService
     {

@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EFCoreCodeFirstSampleWEBAPI.DAL.Interfaces;
+﻿using EFCoreCodeFirstSampleWEBAPI.DAL.Interfaces;
 using EFCoreCodeFirstSampleWEBAPI.DAL.Interfaces.ISQLRepositories;
 using Moq;
 
-namespace EFCoreCodeFirstSampleWEBAPI.BLL.UnitTests.Mocks
+namespace EFCoreCodeFirstSampleWEBAPI.UnitTests.Service.Mocks
 {
     class FakeRepositoryWrapper : IRepositoryWrapper
     {
