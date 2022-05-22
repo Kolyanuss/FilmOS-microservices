@@ -4,6 +4,10 @@
     <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>Filmos_Rating_CleanArchitecture.WebUI</RootNamespace>
     <AssemblyName>Filmos_Rating_CleanArchitecture.WebUI</AssemblyName>
+    <DockerComposeProjectPath>..\..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
+    <UserSecretsId>0dfcd2da-829f-4215-a4db-ef81bbc1b15a</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..\..\..</DockerfileContext>
   </PropertyGroup>
 
   <ItemGroup>
