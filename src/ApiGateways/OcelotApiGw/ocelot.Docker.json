@@ -7,8 +7,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": "8002"
+          "Host": "rating.api",
+          "Port": "80"
         }
       ],
       "UpstreamPathTemplate": "/Rating/Films",
@@ -20,8 +20,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": "8002"
+          "Host": "rating.api",
+          "Port": "80"
         }
       ],
       "UpstreamPathTemplate": "/Rating/Films/{id}",
@@ -34,8 +34,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": "8002"
+          "Host": "rating.api",
+          "Port": "80"
         }
       ],
       "UpstreamPathTemplate": "/Rating/Users",
@@ -49,8 +49,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": "8000"
+          "Host": "favorite.api",
+          "Port": "80"
         }
       ],
       "UpstreamPathTemplate": "/Favorit/Films",
@@ -62,8 +62,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": "8003"
+          "Host": "favorite.api",
+          "Port": "80"
         }
       ],
       "UpstreamPathTemplate": "/Favorit/Films/{id}",
@@ -75,8 +75,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": "8003"
+          "Host": "favorite.api",
+          "Port": "80"
         }
       ],
       "UpstreamPathTemplate": "/Favorit/Films/{id}/desc",
@@ -89,8 +89,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": "44313"
+          "Host": "favorite.api",
+          "Port": "80"
         }
       ],
       "UpstreamPathTemplate": "/Favorit/Users",
@@ -102,8 +102,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": "8003"
+          "Host": "favorite.api",
+          "Port": "80"
         }
       ],
       "UpstreamPathTemplate": "/Favorit/Users/{id}",
@@ -116,8 +116,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": "8003"
+          "Host": "favorite.api",
+          "Port": "80"
         }
       ],
       "UpstreamPathTemplate": "/Favorit/FilmsUsers",
@@ -129,8 +129,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": "8003"
+          "Host": "favorite.api",
+          "Port": "80"
         }
       ],
       "UpstreamPathTemplate": "/Favorit/FilmsUsers/{id1}/{id2}",
@@ -142,8 +142,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": "8003"
+          "Host": "favorite.api",
+          "Port": "80"
         }
       ],
       "UpstreamPathTemplate": "/Favorit/FilmsUsers/{id1}/{id2}/info",
@@ -155,8 +155,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": "8003"
+          "Host": "favorite.api",
+          "Port": "80"
         }
       ],
       "UpstreamPathTemplate": "/Favorit/FilmsUsers/filmsbyuser/{id1}",
@@ -168,8 +168,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": "8003"
+          "Host": "favorite.api",
+          "Port": "80"
         }
       ],
       "UpstreamPathTemplate": "/Favorit/FilmsUsers/usersbyfilm/{id1}",
@@ -182,8 +182,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": "14184"
+          "Host": "basket.api",
+          "Port": "80"
         }
       ],
       "UpstreamPathTemplate": "/Basket/{userName}",
@@ -194,8 +194,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": "14184"
+          "Host": "basket.api",
+          "Port": "80"
         }
       ],
       "UpstreamPathTemplate": "/Basket",

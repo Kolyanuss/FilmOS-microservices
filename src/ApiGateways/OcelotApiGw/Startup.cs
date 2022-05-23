@@ -32,13 +32,15 @@ namespace OcelotApiGw
                 app.UseDeveloperExceptionPage();
             }
 
+            // app.UseHttpsRedirection();
             app.UseRouting();
 
+            // app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapGet("/", async context =>
                 {
-                    await context.Response.WriteAsync("Hello World!");
+                    await context.Response.WriteAsync("Hello World! env: "+env.EnvironmentName);
                 });
             });
 

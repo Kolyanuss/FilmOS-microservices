@@ -29,7 +29,7 @@ services:
 
   basket.api:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Docker
       - "CacheSettings:ConnectionString=redisdb:6379"
     depends_on:
       - redisdb
@@ -39,7 +39,7 @@ services:
   rating.api:
     container_name: Rating.API
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Docker
       - "FilmosDatabase:ConnectionString=mongodb://mongodb:27017"
       - "EventBusSettings:HostAddress=amqp://guest:guest@rabbitmq:5672"
     depends_on:
@@ -53,7 +53,7 @@ services:
   favorite.api:
     container_name: Favorite.API
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Docker
       - "EventBusSettings:HostAddress=amqp://guest:guest@rabbitmq:5672"
     depends_on:
       - mssqldb
@@ -66,7 +66,7 @@ services:
   ocelotapigw:
     container_name: OcelotAPIGW
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Docker
     depends_on:
       - basket.api
       - rating.api
