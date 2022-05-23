@@ -7,6 +7,9 @@ services:
   mongodb:
     image: mongo
 
+  mssqldb:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+
   rabbitmq:
     image: rabbitmq:3-management
 
@@ -23,9 +26,16 @@ services:
       context: .
       dockerfile: src/Services/Filmos_rating/WebUI/Dockerfile
 
+  favorite.api:
+    image: ${DOCKER_REGISTRY-}favorite.api
+    build:
+      context: .
+      dockerfile: src/Services/Filmos_favorites/EFCoreCodeFirstSampleWEBAPI/Dockerfile
+
   ocelotapigw:
     image: ${DOCKER_REGISTRY-}ocelotapigw
     build:
       context: .
       dockerfile: src/ApiGateways/OcelotApiGw/Dockerfile
+
 

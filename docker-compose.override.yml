@@ -13,6 +13,11 @@ services:
     ports:
         - "27017:27017"
 
+  mssqldb:
+    container_name: mssqldb
+    restart: always
+    ports:
+        - "1433:1433"
 
   rabbitmq:
     container_name: RabbitMQ
@@ -32,7 +37,7 @@ services:
       - "8001:80"
 
   rating.api:
-    container_name: rating.api
+    container_name: Rating.API
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - "FilmosDatabase:ConnectionString=mongodb://mongodb:27017"
@@ -42,6 +47,19 @@ services:
       - rabbitmq
     ports:
       - "8002:80"
+    volumes:
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+  favorite.api:
+    container_name: Favorite.API
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "EventBusSettings:HostAddress=amqp://guest:guest@rabbitmq:5672"
+    depends_on:
+      - mssqldb
+      - rabbitmq
+    ports:
+      - "8003:80"
     volumes:
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
 
