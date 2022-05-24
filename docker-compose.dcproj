@@ -3,10 +3,12 @@
   <PropertyGroup Label="Globals">
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
-    <ProjectGuid>f2e5965c-e0f5-4903-928f-3ae2ce8773d8</ProjectGuid>
+    <ProjectGuid>00308ad6-8161-4def-9563-b5ce1bf0dfbc</ProjectGuid>
+  </PropertyGroup>
+  <PropertyGroup>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
-    <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/swagger</DockerServiceUrl>
     <DockerServiceName>basket.api</DockerServiceName>
+    <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/swagger</DockerServiceUrl>
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.override.yml">

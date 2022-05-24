@@ -75,7 +75,7 @@ namespace EFCoreCodeFirstSampleWEBAPI.Controllers
             }
         }
 
-        // GET: api/Films/5
+        // GET: api/Films/5/desc
         [HttpGet("{id}/desc")]
         [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]

@@ -8,6 +8,7 @@
     <PackageReference Include="MassTransit" Version="8.0.2" />
     <PackageReference Include="MassTransit.AspNetCore" Version="7.3.1" />
     <PackageReference Include="MassTransit.RabbitMQ" Version="8.0.2" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.11.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
   </ItemGroup>
 
@@ -15,5 +16,7 @@
     <ProjectReference Include="..\..\..\EventBus.Messages\EventBus.Messages.csproj" />
     <ProjectReference Include="..\Shoping.DAL\Shoping.DAL.csproj" />
   </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties/></VisualStudio></ProjectExtensions>
 
 </Project>

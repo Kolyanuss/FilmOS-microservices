@@ -1,0 +1,208 @@
+﻿{
+  "Routes": [
+    //Rating API
+    //films
+    {
+      "DownstreamPathTemplate": "/api/Films/GetAll",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "8002"
+        }
+      ],
+      "UpstreamPathTemplate": "/Rating/Films",
+      "UpstreamHttpMethod": [ "GET" ],
+      "FileCacheOptions": { "TtlSeconds": 30 }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Films/GetById/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "8002"
+        }
+      ],
+      "UpstreamPathTemplate": "/Rating/Films/{id}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "FileCacheOptions": { "TtlSeconds": 30 }
+    },
+    // users
+    {
+      "DownstreamPathTemplate": "/api/Users/GetAll",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "8002"
+        }
+      ],
+      "UpstreamPathTemplate": "/Rating/Users",
+      "UpstreamHttpMethod": [ "GET" ],
+      "FileCacheOptions": { "TtlSeconds": 30 }
+    },
+    //-------------Favorite API----------------
+    //films
+    {
+      "DownstreamPathTemplate": "/api/films",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "8000"
+        }
+      ],
+      "UpstreamPathTemplate": "/Favorit/Films",
+      "UpstreamHttpMethod": [ "GET", "POST" ],
+      "FileCacheOptions": { "TtlSeconds": 30 }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Films/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "8003"
+        }
+      ],
+      "UpstreamPathTemplate": "/Favorit/Films/{id}",
+      "UpstreamHttpMethod": [ "GET", "PUT", "DELETE" ],
+      "FileCacheOptions": { "TtlSeconds": 30 }
+    },
+    {
+      "DownstreamPathTemplate": "/api/films/{id}/desc",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "8003"
+        }
+      ],
+      "UpstreamPathTemplate": "/Favorit/Films/{id}/desc",
+      "UpstreamHttpMethod": [ "GET" ],
+      "FileCacheOptions": { "TtlSeconds": 30 }
+    },
+    //users
+    {
+      "DownstreamPathTemplate": "/api/users",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "44313"
+        }
+      ],
+      "UpstreamPathTemplate": "/Favorit/Users",
+      "UpstreamHttpMethod": [ "GET", "POST" ],
+      "FileCacheOptions": { "TtlSeconds": 30 }
+    },
+    {
+      "DownstreamPathTemplate": "/api/users/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "8003"
+        }
+      ],
+      "UpstreamPathTemplate": "/Favorit/Users/{id}",
+      "UpstreamHttpMethod": [ "GET", "PUT", "DELETE" ],
+      "FileCacheOptions": { "TtlSeconds": 30 }
+    },
+    //films_users
+    {
+      "DownstreamPathTemplate": "/api/filmsusers",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "8003"
+        }
+      ],
+      "UpstreamPathTemplate": "/Favorit/FilmsUsers",
+      "UpstreamHttpMethod": [ "GET", "POST" ],
+      "FileCacheOptions": { "TtlSeconds": 30 }
+    },
+    {
+      "DownstreamPathTemplate": "/api/filmsusers/{id1}/{id2}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "8003"
+        }
+      ],
+      "UpstreamPathTemplate": "/Favorit/FilmsUsers/{id1}/{id2}",
+      "UpstreamHttpMethod": [ "GET", "PUT", "DELETE" ],
+      "FileCacheOptions": { "TtlSeconds": 30 }
+    },
+    { // detail
+      "DownstreamPathTemplate": "/api/filmsusers/{id1}/{id2}/info",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "8003"
+        }
+      ],
+      "UpstreamPathTemplate": "/Favorit/FilmsUsers/{id1}/{id2}/info",
+      "UpstreamHttpMethod": [ "GET" ],
+      "FileCacheOptions": { "TtlSeconds": 30 }
+    },
+    { // filmsbyuser
+      "DownstreamPathTemplate": "/api/filmsusers/filmsbyuser/{id1}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "8003"
+        }
+      ],
+      "UpstreamPathTemplate": "/Favorit/FilmsUsers/filmsbyuser/{id1}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "FileCacheOptions": { "TtlSeconds": 30 }
+    },
+    { // usersbyfilm
+      "DownstreamPathTemplate": "/api/filmsusers/usersbyfilm/{id1}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "8003"
+        }
+      ],
+      "UpstreamPathTemplate": "/Favorit/FilmsUsers/usersbyfilm/{id1}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "FileCacheOptions": { "TtlSeconds": 30 }
+    },
+    //Basket API
+    {
+      "DownstreamPathTemplate": "/api/v1/Basket/{userName}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "14184"
+        }
+      ],
+      "UpstreamPathTemplate": "/Basket/{userName}",
+      "UpstreamHttpMethod": [ "GET", "DELETE" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/Basket",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "14184"
+        }
+      ],
+      "UpstreamPathTemplate": "/Basket",
+      "UpstreamHttpMethod": [ "POST" ]
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:5010"
+  }
+}
