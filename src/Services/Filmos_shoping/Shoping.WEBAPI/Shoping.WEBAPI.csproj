@@ -17,4 +17,6 @@
     <ProjectReference Include="..\Shoping.DAL\Shoping.DAL.csproj" />
   </ItemGroup>
 
+  <ProjectExtensions><VisualStudio><UserProperties/></VisualStudio></ProjectExtensions>
+
 </Project>
