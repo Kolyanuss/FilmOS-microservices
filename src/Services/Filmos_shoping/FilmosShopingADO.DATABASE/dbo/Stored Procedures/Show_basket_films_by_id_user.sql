@@ -1,5 +1,5 @@
 ﻿-- =============================================
--- Author:		<Author,,Name>
+-- Author:		<0xKolyanus,Nikolay>
 -- Create date: <Create Date,,>
 -- Description:	<Description,,>
 -- =============================================
@@ -13,6 +13,6 @@ BEGIN
 	SET NOCOUNT ON;
 
     -- Insert statements for procedure here
-	SELECT Films.id, Films.name_film, Films.type_price_id From dbo.Basket_films, dbo.Films
+	SELECT Films.* From dbo.Basket_films, dbo.Films
 	Where Basket_films.id_user = @id_user AND Basket_films.id_film = Films.id
 END

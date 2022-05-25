@@ -1,5 +1,5 @@
 ﻿-- =============================================
--- Author:		<Author,,Name>
+-- Author:		<0xKolyanus,Nikolay>
 -- Create date: <Create Date,,>
 -- Description:	<Description,,>
 -- =============================================
