@@ -18,8 +18,6 @@ namespace Shoping.DAL.Repositories.SQL_Repositories
         public SQLBasketFilmsRepository(IConnectionFactory connectionFactory, IConfiguration config)
         {
             _connectionFactory = connectionFactory;
-            var connectionString = config.GetConnectionString("DefaultConnection3");
-            _connectionFactory.SetConnection(connectionString);
         }
 
         public async IAsyncEnumerable<SQLBasketFilms> Get(string sqlExpression)
