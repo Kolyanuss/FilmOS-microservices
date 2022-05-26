@@ -6,6 +6,7 @@ sql DB
 * add connection string for taht DB into `appsettings.json`
 * use that connection in `startup.cs`
 * write `Update-Database` in Console Package Manager (NuGet)
+* run project
 
 ### Example connection string in appsettings:
 `"ConnectionString": {
