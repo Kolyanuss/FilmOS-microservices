@@ -28,9 +28,9 @@ namespace EFCoreCodeFirstSampleWEBAPI.Controllers
                 var Result = await _serviceManager.FilmsService.GetAll();
                 return Ok(Result);
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
-                return StatusCode(500, "Internal server error");
+                return StatusCode(500, ex.Message);
             }
         }
 
