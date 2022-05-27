@@ -7,17 +7,13 @@ namespace Shoping.DAL.Interfaces.SQLInterfaces.ISQLServices
     public interface ISQLBasketFilmsService
     {
         Task<long> AddBasketFilm(SQLBasketFilms BasketFilm);
+        Task DeleteBasketFilm(long idUser);
+        Task DeleteBasketFilm(long idFilm, long idUser);
 
-        void UpdateBasketFilm(SQLBasketFilms BasketFilm);
+        Task<IAsyncEnumerable<SQLBasketFilms>> GetAllBasketFilms();
+        Task<IAsyncEnumerable<SQLBasketFilms>> GetBasketByIdFilm(long Id);
 
-        void DeleteBasketFilm(SQLBasketFilms BasketFilm);
-
-        IAsyncEnumerable<SQLBasketFilms> GetBasketFilmByIdFilm(long Id);
-
-        IAsyncEnumerable<SQLBasketFilms> GetBasketFilmByIdUser(long Id);
-
-        IAsyncEnumerable<SQLBasketFilms> GetAllBasketFilms();
-
+        IAsyncEnumerable<SQLBasketFilms> GetBasketByIdUser(long Id);
         //IAsyncEnumerable<SQLBasketFilmsStr> GetBasketFilmsJoinUser();
     }
 }

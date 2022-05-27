@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace AppMyFilm.WEBAPI.Controllers
 {
     [Route("api/[controller]")]
-    public class BasketFilmsController
+    public class BasketFilmsController : ControllerBase
     {
         #region Propertirs
         ISQLBasketFilmsService _sqlBasketFilmsService;
@@ -21,25 +21,48 @@ namespace AppMyFilm.WEBAPI.Controllers
         #endregion
 
         #region APIs
-        [Route("BasketFilms")]
         [HttpGet]
-        public IAsyncEnumerable<SQLBasketFilms> Get()
+        public async Task<IActionResult> GetAll()
         {
-            return _sqlBasketFilmsService.GetAllBasketFilms();
+            try
+            {
+                var Result = await _sqlBasketFilmsService.GetAllBasketFilms();
+                return Ok(Result);
+            }
+            catch (System.Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
 
-        [Route("BasketFilmsFilm/{Id}")]
+        [Route("ByFilm/{Id}")]
         [HttpGet]
-        public IAsyncEnumerable<SQLBasketFilms> GetByFilm(long Id)
+        public async Task<IActionResult> GetByFilm(long Id)
         {
-            return _sqlBasketFilmsService.GetBasketFilmByIdFilm(Id);
+            try
+            {
+                var Result = await _sqlBasketFilmsService.GetBasketByIdFilm(Id);
+                return Ok(Result);
+            }
+            catch (System.Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
 
-        [Route("BasketFilmsUser/{Id}")]
+        [Route("ByUser/{Id}")]
         [HttpGet]
-        public IAsyncEnumerable<SQLBasketFilms> GetByUser(long Id)
+        public async Task<IActionResult> GetByUser(long Id)
         {
-            return _sqlBasketFilmsService.GetBasketFilmByIdUser(Id);
+            try
+            {
+                var Result = _sqlBasketFilmsService.GetBasketByIdUser(Id);
+                return Ok(Result);
+            }
+            catch (System.Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
 
         /*[Route("BasketFilmsJoin")]
@@ -49,25 +72,53 @@ namespace AppMyFilm.WEBAPI.Controllers
             return _sqlBasketFilmsService.GetBasketFilmsJoinUser();
         }*/
 
-        [Route("BasketFilms")]
         [HttpPost]
-        public Task<long> Post([FromBody] SQLBasketFilms BasketFilm)
+        public async Task<IActionResult> Post([FromBody] SQLBasketFilms BasketFilm)
         {
-            return _sqlBasketFilmsService.AddBasketFilm(BasketFilm);
+            try
+            {
+                var filmsID = await _sqlBasketFilmsService.AddBasketFilm(BasketFilm);
+                /*var FilmForPrint = await _FilmsService.GetFilmById(filmsID);
+                return CreatedAtRoute(
+                      "FilmById",
+                      new { Id = FilmForPrint.Id },
+                      FilmForPrint);*/
+                return Accepted();
+            }
+            catch (System.Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
 
-        [Route("BasketFilms/{id?}")]
-        [HttpPut]
-        public void Put([FromBody] SQLBasketFilms basketFilm)
-        {
-            _sqlBasketFilmsService.UpdateBasketFilm(basketFilm);
-        }
 
-        [Route("BasketFilms/{id?}")]
+        [Route("AllByUserId/{id?}")]
         [HttpDelete]
-        public void Delete([FromBody] SQLBasketFilms basketFilm)
+        public async Task<IActionResult> Delete(int id)
         {
-            _sqlBasketFilmsService.DeleteBasketFilm(basketFilm);
+            try
+            {
+                await _sqlBasketFilmsService.DeleteBasketFilm(id);
+                return Accepted();
+            }
+            catch (System.Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpDelete("idFilm/{id}/idUser/{id2}")]
+        public async Task<IActionResult> Delete(int id, int id2)
+        {
+            try
+            {
+                await _sqlBasketFilmsService.DeleteBasketFilm(id, id2);
+                return Accepted();
+            }
+            catch (System.Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
         #endregion
     }

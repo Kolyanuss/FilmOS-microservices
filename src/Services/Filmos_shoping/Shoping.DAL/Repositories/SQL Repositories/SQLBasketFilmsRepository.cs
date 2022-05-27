@@ -24,33 +24,32 @@ namespace Shoping.DAL.Repositories.SQL_Repositories
         {
             using (SqlConnection connection = (SqlConnection)_connectionFactory.GetSqlAsyncConnection)
             {
-                await connection.OpenAsync();
                 SqlCommand command = new SqlCommand(sqlExpression, connection);
-                SqlDataReader reader = await command.ExecuteReaderAsync();
-                if (reader.HasRows)
+                using (SqlDataReader reader = await command.ExecuteReaderAsync())
                 {
-                    while (await reader.ReadAsync())
+                    if (reader.HasRows)
                     {
-                        long Field1 = reader.GetInt32(0);
-                        long Field2 = reader.GetInt32(1);
+                        while (await reader.ReadAsync())
+                        {
+                            long Field1 = reader.GetInt32(0);
+                            long Field2 = reader.GetInt32(1);
 
-                        yield return new SQLBasketFilms(Field1, Field2);
+                            yield return new SQLBasketFilms(Field1, Field2);
+                        }
                     }
                 }
-                reader.Close();
             }
             yield break;
         }
 
-        public IAsyncEnumerable<SQLBasketFilms> GetAll()//
+        public async Task<IAsyncEnumerable<SQLBasketFilms>> GetAll()
         {
             return Get("SELECT * FROM " + _tableName);
         }
 
-        public IAsyncEnumerable<SQLBasketFilms> GetByIdFilms(long Id)
+        public async Task<IAsyncEnumerable<SQLBasketFilms>> GetByIdFilms(long Id)
         {
-            return Get("SELECT * FROM " + _tableName + " WHERE IdFilms=" + Id);
-
+            return Get("SELECT * FROM " + _tableName + " WHERE id_film=" + Id);
         }
 
         public async IAsyncEnumerable<SQLBasketFilms> GetByIdUsers(long Id)
@@ -60,25 +59,19 @@ namespace Shoping.DAL.Repositories.SQL_Repositories
 
             using (SqlConnection connection = (SqlConnection)_connectionFactory.GetSqlAsyncConnection)
             {
-                await connection.OpenAsync();
-
                 SqlCommand command = new SqlCommand(sqlExpression, connection);
                 // указываем, что команда представляет хранимую процедуру
                 command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add("@id_user", SqlDbType.Int).Value = Id;
                 using (SqlDataReader reader = await command.ExecuteReaderAsync())
                 {
                     if (reader.HasRows)
                     {
                         while (await reader.ReadAsync())
                         {
-                            /*int id = reader.GetInt32(0);
-                            string name = reader.GetString(2);
-                            int age = reader.GetInt32(1);
-                            Console.WriteLine($"{id} \t{name} \t{age}");*/
                             long Field1 = reader.GetInt32(0);
-                            String Field2 = reader.GetString(1);
-                            long Field3 = reader.GetInt32(2);
-                            yield return new SQLBasketFilms(Field1, Field3);
+                            long Field2 = reader.GetInt32(1);
+                            yield return new SQLBasketFilms(Field1, Field2);
                         }
                     }
                 }
@@ -96,23 +89,23 @@ namespace Shoping.DAL.Repositories.SQL_Repositories
             ON tab1.Id = tab2.Id
 		    ORDER BY UserName
             ";
-            
+
             using (SqlConnection connection = (SqlConnection)_connectionFactory.GetSqlAsyncConnection)
             {
-                await connection.OpenAsync();
                 SqlCommand command = new SqlCommand(sqlExpression, connection);
-                SqlDataReader reader = await command.ExecuteReaderAsync();
-                if (reader.HasRows)
+                using (SqlDataReader reader = await command.ExecuteReaderAsync())
                 {
-                    while (await reader.ReadAsync())
+                    if (reader.HasRows)
                     {
-                        string Field1 = reader.GetString(0);
-                        string Field2 = reader.GetString(1);
+                        while (await reader.ReadAsync())
+                        {
+                            string Field1 = reader.GetString(0);
+                            string Field2 = reader.GetString(1);
 
-                        yield return new SQLListFilmsStr(Field1, Field2);
+                            yield return new SQLListFilmsStr(Field1, Field2);
+                        }
                     }
                 }
-                reader.Close();
             }
             yield break;
 
@@ -121,45 +114,40 @@ namespace Shoping.DAL.Repositories.SQL_Repositories
         public async Task<long> Add(SQLBasketFilms entity)
         {
             string sqlExpression = string.Format(
-                "INSERT INTO {0} (IdFilms, IdUser) VALUES ({1},{2})",
+                "INSERT INTO {0} (id_film, id_user) VALUES ({1},{2})",
                 _tableName, entity.id_film, entity.id_user);
 
             using (SqlConnection connection = (SqlConnection)_connectionFactory.GetSqlAsyncConnection)
             {
-                await connection.OpenAsync();
                 SqlCommand command = new SqlCommand(sqlExpression, connection);
                 long num = await command.ExecuteNonQueryAsync();
                 return num;
             }
         }
 
-        public async void Update(SQLBasketFilms entity)
+        public async Task Delete(SQLBasketFilms entity)
         {
             string sqlExpression = string.Format(@"
-            UPDATE {0} SET IdFilms={1}
-            WHERE IdUser={2}
-            LIMIT 1
+            DELETE * FROM {0}
+            WHERE id_film={1} && id_user={2}
             ", _tableName, entity.id_film, entity.id_user);
 
             using (SqlConnection connection = (SqlConnection)_connectionFactory.GetSqlAsyncConnection)
             {
-                await connection.OpenAsync();
                 SqlCommand command = new SqlCommand(sqlExpression, connection);
                 await command.ExecuteNonQueryAsync();
             }
         }
 
-        public async void Delete(SQLBasketFilms entity)
+        public async Task Delete(long idUser) // dellete all record by user id
         {
             string sqlExpression = string.Format(@"
             DELETE * FROM {0}
-            WHERE IdFilms={1} && IdUser={2}
-            LIMIT 1
-            ", _tableName, entity.id_film, entity.id_user);
+            WHERE id_user={1}
+            ", _tableName, idUser);
 
             using (SqlConnection connection = (SqlConnection)_connectionFactory.GetSqlAsyncConnection)
             {
-                await connection.OpenAsync();
                 SqlCommand command = new SqlCommand(sqlExpression, connection);
                 await command.ExecuteNonQueryAsync();
             }

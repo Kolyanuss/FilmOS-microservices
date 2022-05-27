@@ -20,22 +20,27 @@ namespace Shoping.DAL.Services.SQL_Services
             return _UnitOfWork.BasketFilmsRepo.Add(BasketFilm);
         }
 
-        public void DeleteBasketFilm(SQLBasketFilms BasketFilm)
+        public async Task DeleteBasketFilm(long idUser)
         {
-            _UnitOfWork.BasketFilmsRepo.Delete(BasketFilm);
+            await _UnitOfWork.BasketFilmsRepo.Delete(idUser);
         }
 
-        public IAsyncEnumerable<SQLBasketFilms> GetAllBasketFilms()
+        public async Task DeleteBasketFilm(long idFilm, long idUser)
         {
-            return _UnitOfWork.BasketFilmsRepo.GetAll();
+            await _UnitOfWork.BasketFilmsRepo.Delete(new SQLBasketFilms(idFilm, idUser));
         }
 
-        public IAsyncEnumerable<SQLBasketFilms> GetBasketFilmByIdFilm(long Id)
+        public async Task<IAsyncEnumerable<SQLBasketFilms>> GetAllBasketFilms()
         {
-            return _UnitOfWork.BasketFilmsRepo.GetByIdFilms(Id);
+            return await _UnitOfWork.BasketFilmsRepo.GetAll();
         }
 
-        public IAsyncEnumerable<SQLBasketFilms> GetBasketFilmByIdUser(long Id)
+        public async Task<IAsyncEnumerable<SQLBasketFilms>> GetBasketByIdFilm(long Id)
+        {
+            return await _UnitOfWork.BasketFilmsRepo.GetByIdFilms(Id);
+        }
+
+        public IAsyncEnumerable<SQLBasketFilms> GetBasketByIdUser(long Id)
         {
             return _UnitOfWork.BasketFilmsRepo.GetByIdUsers(Id);
         }
@@ -45,9 +50,5 @@ namespace Shoping.DAL.Services.SQL_Services
             return _SqlsqlUnitOfWork.SQLBasketFilmsRepository.GetFilmsJoinUser();
         }*/
 
-        public void UpdateBasketFilm(SQLBasketFilms BasketFilm)
-        {
-            _UnitOfWork.BasketFilmsRepo.Update(BasketFilm);
-        }
     }
 }

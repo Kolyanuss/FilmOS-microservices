@@ -66,8 +66,7 @@ namespace AppMyFilm.WEBAPI.Controllers
             }
         }
 
-        /*[Route("FilmsPost")]
-        [HttpPost]*/
+
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] SQLFilmsForAddDTO filmsDto)
         {
@@ -87,8 +86,7 @@ namespace AppMyFilm.WEBAPI.Controllers
             }
         }
 
-        /*[Route("FilmsUpdate/{id?}")]
-        [HttpPut]*/
+
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, [FromBody] SQLFilmsForAddDTO filmsDto)
         {
@@ -107,8 +105,7 @@ namespace AppMyFilm.WEBAPI.Controllers
             }
         }
 
-        /*[Route("FilmsDelete/{id?}")]
-        [HttpDelete]*/
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
