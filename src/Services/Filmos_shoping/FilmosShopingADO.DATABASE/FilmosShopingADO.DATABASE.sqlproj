@@ -84,6 +84,7 @@
     <EnableFullTextSearch>True</EnableFullTextSearch>
     <DefaultFilegroup>PRIMARY</DefaultFilegroup>
     <CreateProjectFromDatabaseCompleted>True</CreateProjectFromDatabaseCompleted>
+    <AssemblyOwner>0xKolyanus</AssemblyOwner>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -148,15 +149,7 @@
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
-    <Build Include="dbo\Stored Procedures\Select_all_users.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
     <Build Include="dbo\Stored Procedures\Select_admin_user.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="dbo\Stored Procedures\Select_all_films.sql">
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
@@ -172,6 +165,12 @@
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
+    <Build Include="dbo\Stored Procedures\SP_DeleteRecordFromTable.sql" />
+    <Build Include="dbo\Stored Procedures\SP_GetAllRecordsFromTable.sql" />
+    <Build Include="dbo\Stored Procedures\SP_GetRecordByIdFromTable.sql" />
+    <Build Include="dbo\Stored Procedures\SP_InsertRecordToTable.sql" />
+    <Build Include="dbo\Stored Procedures\SP_UnActivateRecordInTable.sql" />
+    <Build Include="dbo\Stored Procedures\SP_UpdateRecordInTable.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="FilmosShopingADO.DATABASE.refactorlog" />

@@ -20,13 +20,13 @@ namespace Filmos_Rating_CleanArchitecture.WebUI.Controllers
             return Ok(await Mediator.Send(new GetFilmsListQuery()));
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<FilmsLookupDto>> GetById(GetFilmQuery query)
+        public async Task<ActionResult<FilmsLookupDto>> GetById(string? id)
         {
-            return Ok(await Mediator.Send(query));
+            return Ok(await Mediator.Send(new GetFilmQuery() { Id = id }));
         }
 
         [HttpPost]

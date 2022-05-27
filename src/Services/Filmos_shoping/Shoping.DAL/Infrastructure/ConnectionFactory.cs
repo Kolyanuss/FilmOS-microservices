@@ -31,7 +31,7 @@ namespace Shoping.DAL.Infrastructure
                 if (!string.IsNullOrEmpty(_connectionString))
                     connection = new SqlConnection(_connectionString);
                 else
-                    connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection3"));
+                    connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
 
                 connection.Open();
 
@@ -48,7 +48,7 @@ namespace Shoping.DAL.Infrastructure
                 if (!string.IsNullOrEmpty(_connectionString))
                     connection = new SqlConnection(_connectionString);
                 else
-                    connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection3"));
+                    connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
 
                 connection.OpenAsync();
                 return connection;

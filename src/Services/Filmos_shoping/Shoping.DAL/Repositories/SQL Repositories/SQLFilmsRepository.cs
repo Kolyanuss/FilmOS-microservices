@@ -16,8 +16,8 @@ namespace Shoping.DAL.Repositories.SQL_Repositories
         private static readonly bool _isSoftDelete = false;
         public SQLFilmsRepository(IConnectionFactory connectionFactory, IConfiguration config) : base(connectionFactory, _tableName, _isSoftDelete)
         {
-            var connectionString = config.GetConnectionString("DefaultConnection3");
-            connectionFactory.SetConnection(connectionString);
+            //var connectionString = config.GetConnectionString("test");
+            //connectionFactory.SetConnection(connectionString);
         }
 
         public async Task<IEnumerable<SQLFilms>> GetNotPopularFilms()

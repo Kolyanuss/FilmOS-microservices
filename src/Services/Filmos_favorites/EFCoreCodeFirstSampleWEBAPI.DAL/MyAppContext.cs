@@ -19,6 +19,9 @@ namespace EFCoreCodeFirstSampleWEBAPI.DAL
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().HasKey(u => u.Id);
+            modelBuilder.Entity<User>().Property(u => u.UserName).IsRequired();
+            modelBuilder.Entity<User>().Property(u => u.Password).IsRequired();
+            modelBuilder.Entity<User>().Property(u => u.IsAdmin).IsRequired();
             modelBuilder.Entity<Genres>().HasKey(u => u.Id);
             modelBuilder.Entity<FilmsUsers>().HasKey(u => new { u.IdFilms, u.IdUser });
             modelBuilder.Entity<FilmsGenres>().HasKey(u => new { u.IdFilms, u.IdGenres });

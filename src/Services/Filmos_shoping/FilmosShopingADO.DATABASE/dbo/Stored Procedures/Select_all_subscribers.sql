@@ -1,5 +1,5 @@
 ﻿-- =============================================
--- Author:		<Author,,Name>
+-- Author:		<0xKolyanus,Nikolay>
 -- Create date: <Create Date,,>
 -- Description:	<Description,,>
 -- =============================================
@@ -12,6 +12,6 @@ BEGIN
 	SET NOCOUNT ON;
 
     -- Insert statements for procedure here
-	SELECT Users.id, Users.user_name,Type_subscriptions.name_subscribe From dbo.Users, dbo.List_subscriptions,dbo.Type_subscriptions
-	Where List_subscriptions.id_user = Users.id AND List_subscriptions.id_subscriptions = Type_subscriptions.id
+	SELECT * From dbo.Users
+	Where Users.id_purchased_subscription != 0
 END
