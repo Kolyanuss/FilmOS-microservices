@@ -7,10 +7,5 @@ namespace Shoping.DAL.Entities.SQLEntities
         public long id_film { get; set; }
         public long id_user { get; set; }
 
-        public SQLBasketFilms(long idFilms, long idUser)
-        {
-            id_film = idFilms;
-            id_user = idUser;
-        }
     }
 }

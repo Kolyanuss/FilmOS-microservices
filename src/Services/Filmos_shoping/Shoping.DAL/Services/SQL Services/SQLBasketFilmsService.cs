@@ -3,51 +3,56 @@ using Shoping.DAL.Interfaces.SQLInterfaces.ISQLServices;
 using Shoping.DAL.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Shoping.DAL.EntitiesDTO;
+using AutoMapper;
 
 namespace Shoping.DAL.Services.SQL_Services
 {
     public class SQLBasketFilmsService : ISQLBasketFilmsService
     {
         ISQLUnitOfWork _UnitOfWork;
+        private IMapper _mapper;
 
-        public SQLBasketFilmsService(ISQLUnitOfWork sqlSqlUnitOfWork)
+        public SQLBasketFilmsService(ISQLUnitOfWork sqlSqlUnitOfWork, IMapper mapper)
         {
             _UnitOfWork = sqlSqlUnitOfWork;
+            _mapper = mapper;
         }
 
-        public Task<long> AddBasketFilm(SQLBasketFilms BasketFilm)
+        public Task<(long, long)> AddBasketFilm(SQLBasketFilmsDTO BasketFilm)
         {
-            return _UnitOfWork.BasketFilmsRepo.Add(BasketFilm);
+            var rez = _mapper.Map<SQLBasketFilms>(BasketFilm);
+            return _UnitOfWork.BasketFilmsRepo.Add(rez);
         }
 
-        public void DeleteBasketFilm(SQLBasketFilms BasketFilm)
+        public async Task DeleteBasketFilm(long idUser)
         {
-            _UnitOfWork.BasketFilmsRepo.Delete(BasketFilm);
+            await _UnitOfWork.BasketFilmsRepo.Delete(idUser);
         }
 
-        public IAsyncEnumerable<SQLBasketFilms> GetAllBasketFilms()
+        public async Task DeleteBasketFilm(long idFilm, long idUser)
         {
-            return _UnitOfWork.BasketFilmsRepo.GetAll();
+            await _UnitOfWork.BasketFilmsRepo.Delete(idFilm, idUser);
         }
 
-        public IAsyncEnumerable<SQLBasketFilms> GetBasketFilmByIdFilm(long Id)
+        public async Task<IEnumerable<SQLBasketFilms>> GetAllBasketFilms()
         {
-            return _UnitOfWork.BasketFilmsRepo.GetByIdFilms(Id);
+            return await _UnitOfWork.BasketFilmsRepo.GetAll();
         }
 
-        public IAsyncEnumerable<SQLBasketFilms> GetBasketFilmByIdUser(long Id)
+        public async Task<IEnumerable<SQLBasketFilms>> GetBasketByIdFilm(long Id)
+        {
+            return await _UnitOfWork.BasketFilmsRepo.GetByIdFilms(Id);
+        }
+
+        public Task<IEnumerable<SQLBasketFilms>> GetBasketByIdUser(long Id)
         {
             return _UnitOfWork.BasketFilmsRepo.GetByIdUsers(Id);
         }
 
-        /*public IAsyncEnumerable<SQLBasketFilmsStr> GetBasketFilmsJoinUser()
+        public Task<IEnumerable<SQLListFilmsStr>> GetBasketFilmsJoinUser()
         {
-            return _SqlsqlUnitOfWork.SQLBasketFilmsRepository.GetFilmsJoinUser();
-        }*/
-
-        public void UpdateBasketFilm(SQLBasketFilms BasketFilm)
-        {
-            _UnitOfWork.BasketFilmsRepo.Update(BasketFilm);
+            return _UnitOfWork.BasketFilmsRepo.GetFilmsJoinUser();
         }
     }
 }

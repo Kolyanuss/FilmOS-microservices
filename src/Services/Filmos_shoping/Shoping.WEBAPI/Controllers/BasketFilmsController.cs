@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Shoping.DAL.Entities.SQLEntities;
+using Shoping.DAL.EntitiesDTO;
 using Shoping.DAL.Interfaces.SQLInterfaces.ISQLServices;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 namespace AppMyFilm.WEBAPI.Controllers
 {
     [Route("api/[controller]")]
-    public class BasketFilmsController
+    public class BasketFilmsController : ControllerBase
     {
         #region Propertirs
         ISQLBasketFilmsService _sqlBasketFilmsService;
@@ -21,53 +22,111 @@ namespace AppMyFilm.WEBAPI.Controllers
         #endregion
 
         #region APIs
-        [Route("BasketFilms")]
         [HttpGet]
-        public IAsyncEnumerable<SQLBasketFilms> Get()
+        public async Task<IActionResult> GetAll()
         {
-            return _sqlBasketFilmsService.GetAllBasketFilms();
+            try
+            {
+                var Result = await _sqlBasketFilmsService.GetAllBasketFilms();
+                return Ok(Result);
+            }
+            catch (System.Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
 
-        [Route("BasketFilmsFilm/{Id}")]
+        [Route("ByFilm/{Id}")]
         [HttpGet]
-        public IAsyncEnumerable<SQLBasketFilms> GetByFilm(long Id)
+        public async Task<IActionResult> GetByFilm(long Id)
         {
-            return _sqlBasketFilmsService.GetBasketFilmByIdFilm(Id);
+            try
+            {
+                var Result = await _sqlBasketFilmsService.GetBasketByIdFilm(Id);
+                return Ok(Result);
+            }
+            catch (System.Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
 
-        [Route("BasketFilmsUser/{Id}")]
+        [Route("ByUser/{Id}")]
         [HttpGet]
-        public IAsyncEnumerable<SQLBasketFilms> GetByUser(long Id)
+        public async Task<IActionResult> GetByUser(long Id)
         {
-            return _sqlBasketFilmsService.GetBasketFilmByIdUser(Id);
+            try
+            {
+                var Result = await _sqlBasketFilmsService.GetBasketByIdUser(Id);
+                return Ok(Result);
+            }
+            catch (System.Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
 
-        /*[Route("BasketFilmsJoin")]
+        [Route("GetByName")]
         [HttpGet]
-        public IAsyncEnumerable<SQLBasketFilmsStr> GetBasketFilmsJoinUser()
+        public async Task<IActionResult> GetBasketFilmsJoinUser()
         {
-            return _sqlBasketFilmsService.GetBasketFilmsJoinUser();
-        }*/
+            try
+            {
+                var Result = await _sqlBasketFilmsService.GetBasketFilmsJoinUser();
+                return Ok(Result);
+            }
+            catch (System.Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
 
-        [Route("BasketFilms")]
         [HttpPost]
-        public Task<long> Post([FromBody] SQLBasketFilms BasketFilm)
+        public async Task<IActionResult> Post([FromBody] SQLBasketFilmsDTO BasketFilmDTO)
         {
-            return _sqlBasketFilmsService.AddBasketFilm(BasketFilm);
+            try
+            {
+                var filmsID = await _sqlBasketFilmsService.AddBasketFilm(BasketFilmDTO);
+                if (filmsID.Item1 == BasketFilmDTO.id_film && filmsID.Item2 == BasketFilmDTO.id_user)
+                {
+                    return Ok(BasketFilmDTO);
+                }
+                return Accepted();
+            }
+            catch (System.Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
 
-        [Route("BasketFilms/{id?}")]
-        [HttpPut]
-        public void Put([FromBody] SQLBasketFilms basketFilm)
-        {
-            _sqlBasketFilmsService.UpdateBasketFilm(basketFilm);
-        }
 
-        [Route("BasketFilms/{id?}")]
+        [Route("AllBy/{idUser}")]
         [HttpDelete]
-        public void Delete([FromBody] SQLBasketFilms basketFilm)
+        public async Task<IActionResult> Delete(long idUser)
         {
-            _sqlBasketFilmsService.DeleteBasketFilm(basketFilm);
+            try
+            {
+                await _sqlBasketFilmsService.DeleteBasketFilm(idUser);
+                return Accepted();
+            }
+            catch (System.Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpDelete("{idFilm}/{idUser}")]
+        public async Task<IActionResult> Delete(long idFilm, long idUser)
+        {
+            try
+            {
+                await _sqlBasketFilmsService.DeleteBasketFilm(idFilm, idUser);
+                return Accepted();
+            }
+            catch (System.Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
         #endregion
     }
