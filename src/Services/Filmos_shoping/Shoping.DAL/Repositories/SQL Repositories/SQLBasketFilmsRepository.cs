@@ -18,148 +18,147 @@ namespace Shoping.DAL.Repositories.SQL_Repositories
         public SQLBasketFilmsRepository(IConnectionFactory connectionFactory, IConfiguration config)
         {
             _connectionFactory = connectionFactory;
-        }
-
-        public async IAsyncEnumerable<SQLBasketFilms> Get(string sqlExpression)
-        {
             using (SqlConnection connection = (SqlConnection)_connectionFactory.GetSqlAsyncConnection)
             {
-                await connection.OpenAsync();
-                SqlCommand command = new SqlCommand(sqlExpression, connection);
-                SqlDataReader reader = await command.ExecuteReaderAsync();
-                if (reader.HasRows)
+                try
                 {
-                    while (await reader.ReadAsync())
-                    {
-                        long Field1 = reader.GetInt32(0);
-                        long Field2 = reader.GetInt32(1);
-
-                        yield return new SQLBasketFilms(Field1, Field2);
-                    }
+                    SqlCommand command = new SqlCommand("SELECT TOP(1) * FROM " + _tableName, connection); // for fix
+                    using (command.ExecuteReader()) { } // fix bug (first request always faild )
                 }
-                reader.Close();
+                catch { }
             }
-            yield break;
         }
 
-        public IAsyncEnumerable<SQLBasketFilms> GetAll()//
+        public async Task<IEnumerable<SQLBasketFilms>> Get(string sqlExpression)
         {
-            return Get("SELECT * FROM " + _tableName);
-        }
-
-        public IAsyncEnumerable<SQLBasketFilms> GetByIdFilms(long Id)
-        {
-            return Get("SELECT * FROM " + _tableName + " WHERE IdFilms=" + Id);
-
-        }
-
-        public async IAsyncEnumerable<SQLBasketFilms> GetByIdUsers(long Id)
-        {
-            // название процедуры
-            string sqlExpression = "Show_basket_films_by_id_user";
-
+            var list = new List<SQLBasketFilms>();
             using (SqlConnection connection = (SqlConnection)_connectionFactory.GetSqlAsyncConnection)
             {
-                await connection.OpenAsync();
-
+                
                 SqlCommand command = new SqlCommand(sqlExpression, connection);
-                // указываем, что команда представляет хранимую процедуру
-                command.CommandType = CommandType.StoredProcedure;
                 using (SqlDataReader reader = await command.ExecuteReaderAsync())
                 {
                     if (reader.HasRows)
                     {
                         while (await reader.ReadAsync())
                         {
-                            /*int id = reader.GetInt32(0);
-                            string name = reader.GetString(2);
-                            int age = reader.GetInt32(1);
-                            Console.WriteLine($"{id} \t{name} \t{age}");*/
-                            long Field1 = reader.GetInt32(0);
-                            String Field2 = reader.GetString(1);
-                            long Field3 = reader.GetInt32(2);
-                            yield return new SQLBasketFilms(Field1, Field3);
+                            list.Add(new SQLBasketFilms() { id_film = reader.GetInt32(0), id_user = reader.GetInt32(1) });
                         }
                     }
                 }
             }
-            yield break;
+            return list;
         }
 
-        public async IAsyncEnumerable<SQLListFilmsStr> GetFilmsJoinUser()
+        public async Task<IEnumerable<SQLBasketFilms>> GetAll()
         {
-            string sqlExpression = @"
-            SELECT DISTINCT UserName, NameFilm FROM 
-                (SELECT IdFilms as Id, NameFilm FROM ListFilms INNER JOIN Films ON ListFilms.IdFilms = Films.Id) as tab1
-                INNER JOIN
-                (SELECT IdFilms as Id, UserName FROM ListFilms INNER JOIN Users ON ListFilms.IdUser = Users.Id) as tab2
-            ON tab1.Id = tab2.Id
-		    ORDER BY UserName
-            ";
-            
+            return await Get("SELECT * FROM " + _tableName);
+        }
+
+        public async Task<IEnumerable<SQLBasketFilms>> GetByIdFilms(long Id)
+        {
+            return await Get("SELECT * FROM " + _tableName + " WHERE id_film=" + Id);
+        }
+
+        public async Task<IEnumerable<SQLBasketFilms>> GetByIdUsers(long Id)
+        {
+            // название процедуры
+            string sqlExpression = "Show_basket_films_by_id_user";
+
+            var list = new List<SQLBasketFilms>();
             using (SqlConnection connection = (SqlConnection)_connectionFactory.GetSqlAsyncConnection)
             {
-                await connection.OpenAsync();
                 SqlCommand command = new SqlCommand(sqlExpression, connection);
-                SqlDataReader reader = await command.ExecuteReaderAsync();
-                if (reader.HasRows)
+                // указываем, что команда представляет хранимую процедуру
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add("@id_user", SqlDbType.Int).Value = Id;
+                using (SqlDataReader reader = await command.ExecuteReaderAsync())
                 {
-                    while (await reader.ReadAsync())
+                    if (reader.HasRows)
                     {
-                        string Field1 = reader.GetString(0);
-                        string Field2 = reader.GetString(1);
-
-                        yield return new SQLListFilmsStr(Field1, Field2);
+                        while (await reader.ReadAsync())
+                        {
+                            list.Add(new SQLBasketFilms() { id_film = reader.GetInt32(0), id_user = reader.GetInt32(1) });
+                        }
                     }
                 }
-                reader.Close();
             }
-            yield break;
-
+            return list;
         }
 
-        public async Task<long> Add(SQLBasketFilms entity)
+        public async Task<IEnumerable<SQLListFilmsStr>> GetFilmsJoinUser()
+        {
+            string sqlExpression = @"
+            SELECT DISTINCT name_film, [user_name] FROM 
+
+	            (SELECT id_film, name_film 
+                    FROM Basket_films INNER JOIN Films 
+                ON Films.Id = Basket_films.id_film) as tab1
+
+	            INNER JOIN
+
+	            (SELECT id_film, [user_name] 
+                    FROM Basket_films INNER JOIN Users 
+                ON Users.Id = Basket_films.id_user) as tab2
+
+            ON tab1.id_film = tab2.id_film
+            ";
+
+            var list = new List<SQLListFilmsStr>();
+            using (SqlConnection connection = (SqlConnection)_connectionFactory.GetSqlAsyncConnection)
+            {
+                SqlCommand command = new SqlCommand(sqlExpression, connection);
+                using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                {
+                    if (reader.HasRows)
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            list.Add(new SQLListFilmsStr(reader.GetString(0), reader.GetString(1)));
+                        }
+                    }
+                }
+            }
+            return list;
+        }
+
+        public async Task<(long,long)> Add(SQLBasketFilms entity)
         {
             string sqlExpression = string.Format(
-                "INSERT INTO {0} (IdFilms, IdUser) VALUES ({1},{2})",
+                @"INSERT INTO {0} (id_film, id_user) VALUES ({1},{2})",
                 _tableName, entity.id_film, entity.id_user);
 
             using (SqlConnection connection = (SqlConnection)_connectionFactory.GetSqlAsyncConnection)
             {
-                await connection.OpenAsync();
                 SqlCommand command = new SqlCommand(sqlExpression, connection);
-                long num = await command.ExecuteNonQueryAsync();
-                return num;
+                await command.ExecuteNonQueryAsync();
+                return (entity.id_film, entity.id_user);
             }
         }
 
-        public async void Update(SQLBasketFilms entity)
+        public async Task Delete(long id_film, long id_user)
         {
-            string sqlExpression = string.Format(@"
-            UPDATE {0} SET IdFilms={1}
-            WHERE IdUser={2}
-            LIMIT 1
-            ", _tableName, entity.id_film, entity.id_user);
+            string sqlExpression = string.Format(
+            @"DELETE FROM {0}
+            WHERE id_film={1} AND id_user={2}",
+            _tableName, id_film, id_user);
 
             using (SqlConnection connection = (SqlConnection)_connectionFactory.GetSqlAsyncConnection)
             {
-                await connection.OpenAsync();
                 SqlCommand command = new SqlCommand(sqlExpression, connection);
                 await command.ExecuteNonQueryAsync();
             }
         }
 
-        public async void Delete(SQLBasketFilms entity)
+        public async Task Delete(long idUser) // dellete all record by user id
         {
-            string sqlExpression = string.Format(@"
-            DELETE * FROM {0}
-            WHERE IdFilms={1} && IdUser={2}
-            LIMIT 1
-            ", _tableName, entity.id_film, entity.id_user);
+            string sqlExpression = string.Format(
+            @"DELETE FROM {0}
+            WHERE id_user={1}",
+            _tableName, idUser);
 
             using (SqlConnection connection = (SqlConnection)_connectionFactory.GetSqlAsyncConnection)
             {
-                await connection.OpenAsync();
                 SqlCommand command = new SqlCommand(sqlExpression, connection);
                 await command.ExecuteNonQueryAsync();
             }

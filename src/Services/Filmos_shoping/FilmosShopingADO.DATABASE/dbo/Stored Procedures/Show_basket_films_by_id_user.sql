@@ -13,6 +13,6 @@ BEGIN
 	SET NOCOUNT ON;
 
     -- Insert statements for procedure here
-	SELECT Films.* From dbo.Basket_films, dbo.Films
-	Where Basket_films.id_user = @id_user AND Basket_films.id_film = Films.id
+	SELECT * From dbo.Basket_films
+	Where Basket_films.id_user = @id_user
 END
