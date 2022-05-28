@@ -21,9 +21,8 @@ namespace AppMyFilm.WEBAPI.Controllers
         #endregion
 
         #region APIs
-        [Route("Films")]
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> GetAll()
         {
             try
             {
@@ -36,8 +35,7 @@ namespace AppMyFilm.WEBAPI.Controllers
             }
         }
 
-        [Route("FilmById/{Id}")]
-        [HttpGet]
+        [HttpGet("{Id}")]
         public async Task<IActionResult> GetById(int Id)
         {
             try
@@ -51,7 +49,7 @@ namespace AppMyFilm.WEBAPI.Controllers
             }
         }
 
-        [Route("FilmsPop")]
+        [Route("NotPopular")]
         [HttpGet]
         public async Task<IActionResult> GetNotPopularFilms()
         {

@@ -6,16 +6,13 @@ namespace Shoping.DAL.Interfaces.SQLInterfaces.ISQLRepositories
 {
     public interface ISQLBasketFilmsRepository
     {
-        Task<IAsyncEnumerable<SQLBasketFilms>> GetAll();
+        Task<IEnumerable<SQLBasketFilms>> GetAll();
+        Task<IEnumerable<SQLBasketFilms>> GetByIdFilms(long Id);
+        Task<IEnumerable<SQLBasketFilms>> GetByIdUsers(long Id);
+        Task<IEnumerable<SQLListFilmsStr>> GetFilmsJoinUser();
 
-        Task<IAsyncEnumerable<SQLBasketFilms>> GetByIdFilms(long Id);
-
-        IAsyncEnumerable<SQLBasketFilms> GetByIdUsers(long Id);
-
-        IAsyncEnumerable<SQLListFilmsStr> GetFilmsJoinUser();
-
-        Task<long> Add(SQLBasketFilms entity);
-        Task Delete(SQLBasketFilms entity);
+        Task<(long, long)> Add(SQLBasketFilms entity);
+        Task Delete(long id_film, long id_user);
         Task Delete(long idUser);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Shoping.DAL.Entities.SQLEntities;
+using Shoping.DAL.EntitiesDTO;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -6,14 +7,13 @@ namespace Shoping.DAL.Interfaces.SQLInterfaces.ISQLServices
 {
     public interface ISQLBasketFilmsService
     {
-        Task<long> AddBasketFilm(SQLBasketFilms BasketFilm);
+        Task<(long, long)> AddBasketFilm(SQLBasketFilmsDTO BasketFilm);
         Task DeleteBasketFilm(long idUser);
         Task DeleteBasketFilm(long idFilm, long idUser);
 
-        Task<IAsyncEnumerable<SQLBasketFilms>> GetAllBasketFilms();
-        Task<IAsyncEnumerable<SQLBasketFilms>> GetBasketByIdFilm(long Id);
-
-        IAsyncEnumerable<SQLBasketFilms> GetBasketByIdUser(long Id);
-        //IAsyncEnumerable<SQLBasketFilmsStr> GetBasketFilmsJoinUser();
+        Task<IEnumerable<SQLBasketFilms>> GetAllBasketFilms();
+        Task<IEnumerable<SQLBasketFilms>> GetBasketByIdFilm(long Id);
+        Task<IEnumerable<SQLBasketFilms>> GetBasketByIdUser(long Id);
+        Task<IEnumerable<SQLListFilmsStr>> GetBasketFilmsJoinUser();
     }
 }

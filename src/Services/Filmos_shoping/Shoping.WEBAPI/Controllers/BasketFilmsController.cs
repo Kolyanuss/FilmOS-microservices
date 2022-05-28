@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Shoping.DAL.Entities.SQLEntities;
+using Shoping.DAL.EntitiesDTO;
 using Shoping.DAL.Interfaces.SQLInterfaces.ISQLServices;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -56,7 +57,7 @@ namespace AppMyFilm.WEBAPI.Controllers
         {
             try
             {
-                var Result = _sqlBasketFilmsService.GetBasketByIdUser(Id);
+                var Result = await _sqlBasketFilmsService.GetBasketByIdUser(Id);
                 return Ok(Result);
             }
             catch (System.Exception ex)
@@ -65,24 +66,31 @@ namespace AppMyFilm.WEBAPI.Controllers
             }
         }
 
-        /*[Route("BasketFilmsJoin")]
+        [Route("GetByName")]
         [HttpGet]
-        public IAsyncEnumerable<SQLBasketFilmsStr> GetBasketFilmsJoinUser()
+        public async Task<IActionResult> GetBasketFilmsJoinUser()
         {
-            return _sqlBasketFilmsService.GetBasketFilmsJoinUser();
-        }*/
+            try
+            {
+                var Result = await _sqlBasketFilmsService.GetBasketFilmsJoinUser();
+                return Ok(Result);
+            }
+            catch (System.Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] SQLBasketFilms BasketFilm)
+        public async Task<IActionResult> Post([FromBody] SQLBasketFilmsDTO BasketFilmDTO)
         {
             try
             {
-                var filmsID = await _sqlBasketFilmsService.AddBasketFilm(BasketFilm);
-                /*var FilmForPrint = await _FilmsService.GetFilmById(filmsID);
-                return CreatedAtRoute(
-                      "FilmById",
-                      new { Id = FilmForPrint.Id },
-                      FilmForPrint);*/
+                var filmsID = await _sqlBasketFilmsService.AddBasketFilm(BasketFilmDTO);
+                if (filmsID.Item1 == BasketFilmDTO.id_film && filmsID.Item2 == BasketFilmDTO.id_user)
+                {
+                    return Ok(BasketFilmDTO);
+                }
                 return Accepted();
             }
             catch (System.Exception ex)
@@ -92,13 +100,13 @@ namespace AppMyFilm.WEBAPI.Controllers
         }
 
 
-        [Route("AllByUserId/{id?}")]
+        [Route("AllBy/{idUser}")]
         [HttpDelete]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(long idUser)
         {
             try
             {
-                await _sqlBasketFilmsService.DeleteBasketFilm(id);
+                await _sqlBasketFilmsService.DeleteBasketFilm(idUser);
                 return Accepted();
             }
             catch (System.Exception ex)
@@ -107,12 +115,12 @@ namespace AppMyFilm.WEBAPI.Controllers
             }
         }
 
-        [HttpDelete("idFilm/{id}/idUser/{id2}")]
-        public async Task<IActionResult> Delete(int id, int id2)
+        [HttpDelete("{idFilm}/{idUser}")]
+        public async Task<IActionResult> Delete(long idFilm, long idUser)
         {
             try
             {
-                await _sqlBasketFilmsService.DeleteBasketFilm(id, id2);
+                await _sqlBasketFilmsService.DeleteBasketFilm(idFilm, idUser);
                 return Accepted();
             }
             catch (System.Exception ex)

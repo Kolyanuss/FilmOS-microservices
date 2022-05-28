@@ -4,13 +4,13 @@ namespace Shoping.DAL.Entities.SQLEntities
 {
     public class SQLListFilmsStr : IClearEntity
     {
-        public string UserName { get; }
         public string NameFilm { get; }
+        public string UserName { get; }
 
-        public SQLListFilmsStr(string userName, string nameFilm)
+        public SQLListFilmsStr(string nameFilm, string userName)
         {
-            UserName = userName;
             NameFilm = nameFilm;
+            UserName = userName;
         }
     }
 }
