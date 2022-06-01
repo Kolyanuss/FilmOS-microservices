@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Net;
 using System.Threading.Tasks;
+using Basket.API.GrpcServices;
 
 namespace Basket.API.Controllers
 {
@@ -12,10 +13,12 @@ namespace Basket.API.Controllers
     public class BasketController : ControllerBase
     {
         private readonly IBasketRepository _repository;
+        private readonly BasketGrscService _grpc;
 
-        public BasketController(IBasketRepository repository)
+        public BasketController(IBasketRepository repository, BasketGrscService grpc)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            _grpc = grpc ?? throw new ArgumentNullException(nameof(grpc));
         }
 
         [HttpGet("{userName}", Name = "GetBasket")]
@@ -23,6 +26,10 @@ namespace Basket.API.Controllers
         public async Task<ActionResult<ShoppingCart>> GetBasket(string userName)
         {
             var basket = await _repository.GetBasket(userName);
+            if (basket == null)
+            {
+                basket = await _grpc.GetBasketFromSqlByUserName(userName);
+            }
             return Ok(basket ?? new ShoppingCart(userName));
         }
 
