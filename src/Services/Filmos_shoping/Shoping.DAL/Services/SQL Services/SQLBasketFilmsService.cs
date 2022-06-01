@@ -19,18 +19,18 @@ namespace Shoping.DAL.Services.SQL_Services
             _mapper = mapper;
         }
 
-        public Task<(long, long)> AddBasketFilm(SQLBasketFilmsDTO BasketFilm)
+        public Task<(int, int)> AddBasketFilm(SQLBasketFilmsDTO BasketFilm)
         {
             var rez = _mapper.Map<SQLBasketFilms>(BasketFilm);
             return _UnitOfWork.BasketFilmsRepo.Add(rez);
         }
 
-        public async Task DeleteBasketFilm(long idUser)
+        public async Task DeleteBasketFilm(int idUser)
         {
             await _UnitOfWork.BasketFilmsRepo.Delete(idUser);
         }
 
-        public async Task DeleteBasketFilm(long idFilm, long idUser)
+        public async Task DeleteBasketFilm(int idFilm, int idUser)
         {
             await _UnitOfWork.BasketFilmsRepo.Delete(idFilm, idUser);
         }
@@ -40,19 +40,24 @@ namespace Shoping.DAL.Services.SQL_Services
             return await _UnitOfWork.BasketFilmsRepo.GetAll();
         }
 
-        public async Task<IEnumerable<SQLBasketFilms>> GetBasketByIdFilm(long Id)
+        public async Task<IEnumerable<SQLBasketFilms>> GetBasketByIdFilm(int Id)
         {
             return await _UnitOfWork.BasketFilmsRepo.GetByIdFilms(Id);
         }
 
-        public Task<IEnumerable<SQLBasketFilms>> GetBasketByIdUser(long Id)
+        public async Task<IEnumerable<SQLBasketFilms>> GetBasketByIdUser(int Id)
         {
-            return _UnitOfWork.BasketFilmsRepo.GetByIdUsers(Id);
+            return await _UnitOfWork.BasketFilmsRepo.GetByIdUsers(Id);
         }
 
-        public Task<IEnumerable<SQLListFilmsStr>> GetBasketFilmsJoinUser()
+        public async Task<IEnumerable<SQLListFilmsStr>> GetBasketFilmsJoinUser()
         {
-            return _UnitOfWork.BasketFilmsRepo.GetFilmsJoinUser();
+            return await _UnitOfWork.BasketFilmsRepo.GetFilmsJoinUser();
+        }
+
+        public async Task<IEnumerable<int>> GetAllIdByUserName(string UserName)
+        {
+            return await _UnitOfWork.BasketFilmsRepo.GetAllIdByUserName(UserName);
         }
     }
 }
