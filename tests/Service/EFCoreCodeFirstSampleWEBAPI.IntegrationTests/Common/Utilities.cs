@@ -28,7 +28,7 @@ namespace EFCoreCodeFirstSampleWEBAPI.IntergationTests.Common
         {
             context.Films.Add(
             new Films
-            {
+            { // id 3
                 NameFilm = "Film for test",
                 ReleaseData = new DateTime(1991, 01, 01),
                 Country = "memory",
@@ -36,7 +36,7 @@ namespace EFCoreCodeFirstSampleWEBAPI.IntergationTests.Common
             });
             context.Films.Add(
             new Films
-            {
+            { // id 4
                 NameFilm = "Film for DELETE",
                 ReleaseData = new DateTime(1991, 01, 01),
                 Country = "memory",
@@ -44,7 +44,7 @@ namespace EFCoreCodeFirstSampleWEBAPI.IntergationTests.Common
             });
             context.Films.Add(
             new Films
-            {
+            { // id 5
                 NameFilm = "Film for DELETE2",
                 ReleaseData = new DateTime(1991, 01, 01),
                 Country = "memory",

@@ -1,9 +1,6 @@
 ﻿using EFCoreCodeFirstSampleWEBAPI.BLL.DataTransferObjects;
 using EFCoreCodeFirstSampleWEBAPI.IntergationTests.Common;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -50,18 +47,63 @@ namespace EFCoreCodeFirstSampleWEBAPI.IntegrationTests.Controllers.Films
             Assert.Equal(id, rez.Id);
             Assert.Equal(putFilm, rez.NameFilm);
         }
-/*
+
         [Theory]
         [InlineData(0)]
-        [InlineData(-1)]
         [InlineData(100)]
-        public async Task Put_nonexistId_ExpectCode404NotFound(int id)
+        public async Task Put_nonexistIdAndValidRequest_ExpectCode404NotFound(int id)
         {
+            // Arrange
+            var client = _factory.GetAnonymousClient();
+            string putFilm = "Put Film";
+
+            // Aact
+            var responsePut = await client.PutAsync("/api/Films/" + id, Utilities.GetRequestContent(
+                new FilmsForCreationDto()
+                {
+                    Country = "Country with id " + id,
+                    Data = new DateTime(1991, 01, 01),
+                    FKDescriptionId = 1,
+                    NameFilm = putFilm
+                }));
+
+            // Assert            
+            Assert.Equal(System.Net.HttpStatusCode.NotFound, responsePut.StatusCode);
+        }
+
+        [Theory]
+        [InlineData(2)]
+        public async Task Put_ValidIdAndInvalidRequest_ExpectCode400Badrequest(int id)
+        {
+            // Arrange
             var client = _factory.GetAnonymousClient();
 
-            var response = await client.DeleteAsync("/api/Films/" + id);
+            // Aact
+            var responsePut = await client.PutAsync("/api/Films/" + id, Utilities.GetRequestContent(
+                new FilmsForCreationDto()
+                {
+                    Country = "Country with id " + id,
+                    Data = new DateTime(1991, 01, 01),
+                    FKDescriptionId = 1,
+                    NameFilm = ""
+                }));
 
-            Assert.Equal(System.Net.HttpStatusCode.NotFound, response.StatusCode);
-        }*/
+            // Assert            
+            Assert.Equal(System.Net.HttpStatusCode.BadRequest, responsePut.StatusCode);
+        }
+
+        [Theory]
+        [InlineData(3)]
+        public async Task Put_ValidIdAndEmptyRequest_ExpectCode400Badrequest(int id)
+        {
+            // Arrange
+            var client = _factory.GetAnonymousClient();
+            FilmsForCreationDto emprtyfilm = null;
+            // Aact
+            var responsePut = await client.PutAsync("/api/Films/" + id, Utilities.GetRequestContent(emprtyfilm));
+
+            // Assert            
+            Assert.Equal(System.Net.HttpStatusCode.BadRequest, responsePut.StatusCode);
+        }
     }
 }

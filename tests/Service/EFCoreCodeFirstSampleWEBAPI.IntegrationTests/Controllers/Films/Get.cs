@@ -46,7 +46,7 @@ namespace EFCoreCodeFirstSampleWEBAPI.IntegrationTests.Controllers.Films
             var rez = await Utilities.GetResponseContent<FilmsDTO>(response);
 
             Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-            Assert.IsAssignableFrom<FilmsDTO>(rez);
+            Assert.IsType<FilmsDTO>(rez);
             Assert.Equal(id, rez.Id);
         }
 
