@@ -37,7 +37,6 @@ namespace EFCoreCodeFirstSampleWEBAPI.IntegrationTests.Controllers.Films
             // Assert
             Assert.Equal(System.Net.HttpStatusCode.Created, responsePost.StatusCode);
             Assert.IsType<FilmsDTO>(rez);
-            Assert.Equal(6, rez.Id);
             Assert.Equal(newFilm.NameFilm, rez.NameFilm);
             Assert.Equal(newFilm.Country, rez.Country);
             Assert.Equal(newFilm.Data, rez.Data);
@@ -70,8 +69,8 @@ namespace EFCoreCodeFirstSampleWEBAPI.IntegrationTests.Controllers.Films
         {
             // Arrange
             var client = _factory.GetAnonymousClient();
-            string PostFilm = "Post Film";
             FilmsForCreationDto emprtyfilm = null;
+
             // Aact
             var responsePost = await client.PostAsync("/api/Films/", Utilities.GetRequestContent(emprtyfilm));
 
