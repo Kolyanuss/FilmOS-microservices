@@ -3,9 +3,12 @@ syntax = "proto3";
 option csharp_namespace = "Shoping.GRPC.Protos";
 
 service BasketProto{
-	rpc GetTestFirstBasket (GetTestRequest) returns (BasketModel);
+	rpc GetTestBasket (GetTestRequest) returns (BasketModel);
 	rpc GetAllBasket (GetAllBasketRequest) returns (stream BasketModel);
-	rpc GetBasketFilmByUserName (GetBasketByNameUserRequest) returns (stream BasketModel);
+	rpc GetBasketByUserName (GetBasketByNameUserRequest) returns (stream BasketModel);
+	
+	rpc CreateBasket (CreateBasketRequest) returns (StatusResponse);
+	rpc DeleteBasket (DeleteBasketRequest) returns (StatusResponse);
 }
 
 message GetTestRequest{
@@ -19,6 +22,21 @@ message GetBasketByNameUserRequest{
 }
 
 message BasketModel{
-	int64 id_object = 1;
-	int64 id_user = 2;
+	int32 id_object = 1;
+	string type_object = 2;
+	int32 id_user = 3;
+	int32 quantity = 4;
+	int32 price = 5;
+}
+
+message CreateBasketRequest {
+  BasketModel basket = 1;
+}
+
+message DeleteBasketRequest {
+  BasketModel basket = 1;
+}
+
+message StatusResponse {
+  bool success = 1;
 }

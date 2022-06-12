@@ -2,6 +2,7 @@ using Basket.API.GrpcServices;
 using Basket.API.Repositories;
 using Basket.API.Repositories.Interfaces;
 using Grpc.Net.Client;
+using Grpc.Net.ClientFactory;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -37,20 +38,16 @@ namespace Basket.API
             services.AddAutoMapper(typeof(Startup));
 
             // Grpc Configuration
-            /*var grpcChannel = GrpcChannel.ForAddress("https://localhost:5001",
-                new GrpcChannelOptions { HttpHandler = httpHandler });
-*/
+            
             services.AddGrpcClient<BasketProto.BasketProtoClient>
                 (o => o.Address = new Uri(Configuration["GrpcSettings:BasketUrl"]))
                 .ConfigurePrimaryHttpMessageHandler(() =>
                 {
                     var httpHandler = new HttpClientHandler();
-                    // Return `true` to allow certificates that are untrusted/invalid
                     httpHandler.ServerCertificateCustomValidationCallback =
                         HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
                     return httpHandler;
                 });
-
             services.AddScoped<BasketGrscService>();
 
             // Swagger Configuration
@@ -73,7 +70,7 @@ namespace Basket.API
 
             app.UseRouting();
 
-            app.UseAuthentication();
+            //app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
