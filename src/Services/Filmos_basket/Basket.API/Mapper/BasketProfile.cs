@@ -12,6 +12,9 @@ namespace Basket.API.Mapper
 			CreateMap<ShoppingCartItem, BasketModel>().ReverseMap()
 				.ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.IdObject))
 				.ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.TypeObject));
+			CreateMap<ShoppingCartItem, BasketModel>()
+				.ForMember(dest => dest.IdObject, opt => opt.MapFrom(src => src.ProductId))
+				.ForMember(dest => dest.TypeObject, opt => opt.MapFrom(src => src.ProductName));
 		}
 	}
 }

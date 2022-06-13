@@ -7,6 +7,7 @@ namespace Shoping.DAL.Interfaces.SQLInterfaces.ISQLRepositories
     public interface ISQLBasketFilmsRepository
     {
         Task<IEnumerable<SQLBasketFilms>> GetAll();
+        Task<SQLBasketFilms> GetByTwoId(int IdFilm, int IdUser);
         Task<IEnumerable<SQLBasketFilms>> GetByIdFilms(int Id);
         Task<IEnumerable<SQLBasketFilms>> GetByIdUsers(int Id);
         Task<IEnumerable<int>> GetAllIdByUserName(string UserName);

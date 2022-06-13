@@ -4,8 +4,9 @@ option csharp_namespace = "Shoping.GRPC.Protos";
 
 service BasketProto{
 	rpc GetTestBasket (GetTestRequest) returns (BasketModel);
+
 	rpc GetAllBasket (GetAllBasketRequest) returns (stream BasketModel);
-	rpc GetBasketByUserName (GetBasketByNameUserRequest) returns (stream BasketModel);
+	rpc GetBasketByUserId (GetBasketByUserIdRequest) returns (stream BasketModel);
 	
 	rpc CreateBasket (CreateBasketRequest) returns (StatusResponse);
 	rpc DeleteBasket (DeleteBasketRequest) returns (StatusResponse);
@@ -17,8 +18,8 @@ message GetTestRequest{
 message GetAllBasketRequest{
 }
 
-message GetBasketByNameUserRequest{
-  string userName = 1;
+message GetBasketByUserIdRequest{
+  int32 userId = 1;
 }
 
 message BasketModel{

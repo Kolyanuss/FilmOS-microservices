@@ -3,6 +3,7 @@ using Basket.API.Entities;
 using Grpc.Net.Client;
 using Shoping.GRPC.Protos;
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -28,9 +29,10 @@ namespace Basket.API.GrpcServices
 
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
+
         public async Task<ShoppingCart> GetBasketTest()
         {
-            var newCart = new ShoppingCart("Test");
+            var newCart = new ShoppingCart(0);
 
             var rez = _BasketClient.GetTestBasket(new GetTestRequest());
             newCart.Items.Add(_mapper.Map<ShoppingCartItem>(rez));
@@ -38,12 +40,38 @@ namespace Basket.API.GrpcServices
             return newCart;
         }
 
-        public async Task<ShoppingCart> GetBasketFromSqlByUserName(string UserName)
+        public async Task<List<ShoppingCart>> GetAllBasket()
         {
-            var newCart = new ShoppingCart(UserName);
+            var CardList = new List<ShoppingCart>();
+            using (var clientData = _BasketClient.GetAllBasket(new GetAllBasketRequest { }))
+            {
+                while (await clientData.ResponseStream.MoveNext(new System.Threading.CancellationToken()))
+                {
+                    var itemModel = clientData.ResponseStream.Current;
+                    var item = _mapper.Map<ShoppingCartItem>(itemModel);
 
-            var Request = new GetBasketByNameUserRequest { UserName = UserName };
-            using (var clientData = _BasketClient.GetBasketByUserName(Request))
+                    var findCard = CardList.Find(x => x.UserId == itemModel.IdUser.ToString());
+                    if (findCard != null)
+                    {
+                        findCard.Items.Add(item);
+                    }
+                    else
+                    {
+                        var NewCard = new ShoppingCart(itemModel.IdUser);
+                        NewCard.Items.Add(item);
+                        CardList.Add(NewCard);
+                    }
+                }
+            }
+            return CardList;
+        }
+
+        public async Task<ShoppingCart> GetBasketFromSqlById(int UserId)
+        {
+            var newCart = new ShoppingCart(UserId);
+
+            var Request = new GetBasketByUserIdRequest { UserId = UserId };
+            using (var clientData = _BasketClient.GetBasketByUserId(Request))
             {
                 while (await clientData.ResponseStream.MoveNext(new System.Threading.CancellationToken()))
                 {
@@ -58,40 +86,32 @@ namespace Basket.API.GrpcServices
         {
             foreach (var item in card.Items)
             {
-                if(!await AddItemInBasket(item))
+                var basketModel = _mapper.Map<BasketModel>(item);
+                basketModel.IdUser = int.Parse(card.UserId);
+                var Request = new CreateBasketRequest { Basket = basketModel };
+
+                if (_BasketClient.CreateBasketAsync(Request).ResponseAsync.Result.Success == false)
                 {
                     return false;
                 }
             }
             return true;
-        }
-
-        public async Task<bool> AddItemInBasket(ShoppingCartItem item)
-        {
-            var basketModel = _mapper.Map<BasketModel>(item);
-            var Request = new CreateBasketRequest { Basket = basketModel };
-
-            return _BasketClient.CreateBasketAsync(Request).ResponseAsync.Result.Success;
         }
 
         public async Task<bool> DeleteCardInBasket(ShoppingCart card)
         {
             foreach (var item in card.Items)
             {
-                if (!await DeleteItemInBasket(item))
+                var basketModel = _mapper.Map<BasketModel>(item);
+                basketModel.IdUser = int.Parse(card.UserId);
+                var Request = new DeleteBasketRequest { Basket = basketModel };
+                
+                if (_BasketClient.DeleteBasketAsync(Request).ResponseAsync.Result.Success == false)
                 {
                     return false;
                 }
             }
             return true;
-        }
-
-        public async Task<bool> DeleteItemInBasket(ShoppingCartItem item)
-        {
-            var basketModel = _mapper.Map<BasketModel>(item);
-            var Request = new DeleteBasketRequest { Basket = basketModel };
-
-            return _BasketClient.DeleteBasketAsync(Request).ResponseAsync.Result.Success;
         }
     }
 }

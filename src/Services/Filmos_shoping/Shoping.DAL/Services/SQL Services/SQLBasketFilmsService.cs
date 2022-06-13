@@ -1,10 +1,12 @@
-﻿using Shoping.DAL.Entities.SQLEntities;
-using Shoping.DAL.Interfaces.SQLInterfaces.ISQLServices;
+﻿using AutoMapper;
+using Shoping.DAL.Entities.SQLEntities;
+using Shoping.DAL.EntitiesDTO;
+using Shoping.DAL.Exceptions.Abstract;
 using Shoping.DAL.Interfaces;
+using Shoping.DAL.Interfaces.SQLInterfaces.ISQLServices;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Shoping.DAL.EntitiesDTO;
-using AutoMapper;
 
 namespace Shoping.DAL.Services.SQL_Services
 {
@@ -19,20 +21,30 @@ namespace Shoping.DAL.Services.SQL_Services
             _mapper = mapper;
         }
 
-        public Task<(int, int)> AddBasketFilm(SQLBasketFilmsDTO BasketFilm)
+        public async Task<(int, int)> AddBasketFilm(SQLBasketFilmsDTO BasketFilm)
         {
-            var rez = _mapper.Map<SQLBasketFilms>(BasketFilm);
-            return _UnitOfWork.BasketFilmsRepo.Add(rez);
+            if (_UnitOfWork.BasketFilmsRepo.GetByTwoId(BasketFilm.id_film, BasketFilm.id_user) != null)
+            {
+                var rez = _mapper.Map<SQLBasketFilms>(BasketFilm);
+                return await _UnitOfWork.BasketFilmsRepo.Add(rez);
+            }
+            return (0, 0);
         }
 
         public async Task DeleteBasketFilm(int idUser)
         {
-            await _UnitOfWork.BasketFilmsRepo.Delete(idUser);
+            if (_UnitOfWork.BasketFilmsRepo.GetByIdUsers(idUser) != null)
+            {
+                await _UnitOfWork.BasketFilmsRepo.Delete(idUser);
+            }
         }
 
         public async Task DeleteBasketFilm(int idFilm, int idUser)
         {
-            await _UnitOfWork.BasketFilmsRepo.Delete(idFilm, idUser);
+            if (_UnitOfWork.BasketFilmsRepo.GetByTwoId(idFilm, idUser) != null)
+            {
+                await _UnitOfWork.BasketFilmsRepo.Delete(idFilm, idUser);
+            }
         }
 
         public async Task<IEnumerable<SQLBasketFilms>> GetAllBasketFilms()

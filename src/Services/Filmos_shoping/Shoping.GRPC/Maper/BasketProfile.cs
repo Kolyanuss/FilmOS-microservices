@@ -9,12 +9,13 @@ namespace Shoping.GRPC.Maper
     {
         public BasketProfile()
         {
-            CreateMap<SQLBasketFilms, BasketModel>().ReverseMap()
+            /*CreateMap<SQLBasketFilms, BasketModel>().ReverseMap()
                 .ForMember(dest => dest.id_film, opt => opt.MapFrom(src => src.IdObject))
-                .ForMember(dest => dest.id_user, opt => opt.MapFrom(src => src.IdUser));
+                .ForMember(dest => dest.id_user, opt => opt.MapFrom(src => src.IdUser));*/
             CreateMap<SQLBasketFilmsDTO, BasketModel>().ReverseMap()
                 .ForMember(dest => dest.id_film, opt => opt.MapFrom(src => src.IdObject))
                 .ForMember(dest => dest.id_user, opt => opt.MapFrom(src => src.IdUser));
+            CreateMap<SQLBasketFilmsDTO, SQLBasketFilms>().ReverseMap();
         }
     }
 }

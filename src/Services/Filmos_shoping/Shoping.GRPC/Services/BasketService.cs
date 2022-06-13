@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using Grpc.Core;
 using Shoping.DAL.EntitiesDTO;
+using Shoping.DAL.Exceptions.Abstract;
 using Shoping.DAL.Interfaces.SQLInterfaces.ISQLServices;
 using Shoping.GRPC.Maper;
 using Shoping.GRPC.Protos;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Shoping.GRPC.Services
@@ -50,19 +50,17 @@ namespace Shoping.GRPC.Services
             }
         }
 
-        public override async Task GetBasketByUserName(GetBasketByNameUserRequest request, IServerStreamWriter<BasketModel> responseStream, ServerCallContext context)
+        public override async Task GetBasketByUserId(GetBasketByUserIdRequest request, IServerStreamWriter<BasketModel> responseStream, ServerCallContext context)
         {
-            // find userId by name
-            var IdUser = (await _SqlBasketFilmServise.GetAllIdByUserName(request.UserName)).FirstOrDefault();
-            if (IdUser == 0)
+            if (request.UserId == 0)
             {
-                throw new RpcException(new Status(StatusCode.NotFound, $"User with UserName={request.UserName} is not found."));
+                throw new RpcException(new Status(StatusCode.NotFound, $"User with Id={request.UserId} is not found."));
             }
 
-            var sqlBasketList = await _SqlBasketFilmServise.GetBasketByIdUser(IdUser);
+            var sqlBasketList = await _SqlBasketFilmServise.GetBasketByIdUser(request.UserId);
             if (sqlBasketList == null)
             {
-                throw new RpcException(new Status(StatusCode.NotFound, $"Basket for UserName={request.UserName} is empty."));
+                throw new RpcException(new Status(StatusCode.NotFound, $"Basket for UserId={request.UserId} is empty."));
             }
 
             // in future: add basket subscription support
@@ -74,8 +72,8 @@ namespace Shoping.GRPC.Services
                     IdObject = basket.id_film,
                     TypeObject = "Films",
                     IdUser = basket.id_user,
-                    Quantity = 1,
-                    Price = 100
+                    Quantity = 1, // stub
+                    Price = 100 // stub
                 });
             }
         }
@@ -89,9 +87,9 @@ namespace Shoping.GRPC.Services
                     var basket = _mapper.Map<SQLBasketFilmsDTO>(request.Basket);
                     await _SqlBasketFilmServise.AddBasketFilm(basket);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return new StatusResponse { Success = false };
+                    throw new RpcException(new Status(StatusCode.Internal, ex.Message));
                 }
                 return new StatusResponse { Success = true };
             }
@@ -111,9 +109,9 @@ namespace Shoping.GRPC.Services
                     }
                     else await _SqlBasketFilmServise.DeleteBasketFilm(request.Basket.IdObject, request.Basket.IdUser);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return new StatusResponse { Success = false };
+                    throw new RpcException(new Status(StatusCode.Internal, ex.Message));
                 }
                 return new StatusResponse { Success = true };
             }

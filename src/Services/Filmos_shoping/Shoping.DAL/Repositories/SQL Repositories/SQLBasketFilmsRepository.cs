@@ -33,7 +33,7 @@ namespace Shoping.DAL.Repositories.SQL_Repositories
         {
             var list = new List<SQLBasketFilms>();
             using (SqlConnection connection = (SqlConnection)_connectionFactory.GetSqlAsyncConnection)
-            {                
+            {
                 SqlCommand command = new SqlCommand(sqlExpression, connection);
                 using (SqlDataReader reader = await command.ExecuteReaderAsync())
                 {
@@ -59,12 +59,18 @@ namespace Shoping.DAL.Repositories.SQL_Repositories
             return await Get("SELECT * FROM " + _tableName + " WHERE id_film=" + Id);
         }
 
+        public async Task<SQLBasketFilms> GetByTwoId(int IdFilm, int IdUser)
+        {
+            return ((List<SQLBasketFilms>)await Get("SELECT * FROM " + _tableName + 
+                " WHERE id_film=" + IdFilm + " AND id_user" + IdUser)).ToArray()[0];
+        }
+
         public async Task<IEnumerable<int>> GetAllIdByUserName(string UserName)
         {// thah function must return all users id by username
             string sqlExpression =
                 @"SELECT Id FROM Users
-                WHERE Users.user_name= '" + UserName+"'";
-            
+                WHERE Users.user_name= '" + UserName + "'";
+
             var list = new List<int>();
             using (SqlConnection connection = (SqlConnection)_connectionFactory.GetSqlAsyncConnection)
             {
@@ -145,7 +151,7 @@ namespace Shoping.DAL.Repositories.SQL_Repositories
             return list;
         }
 
-        public async Task<(int,int)> Add(SQLBasketFilms entity)
+        public async Task<(int, int)> Add(SQLBasketFilms entity)
         {
             string sqlExpression = string.Format(
                 @"INSERT INTO {0} (id_film, id_user) VALUES ({1},{2})",
