@@ -16,9 +16,9 @@ namespace Basket.API.Repositories
             _redisCache = cache ?? throw new ArgumentNullException(nameof(cache));
         }
 
-        public async Task<ShoppingCart> GetBasket(string userName)
+        public async Task<ShoppingCart> GetBasket(string userId)
         {
-            var basket = await _redisCache.GetStringAsync(userName);
+            var basket = await _redisCache.GetStringAsync(userId);
 
             if (String.IsNullOrEmpty(basket))
                 return null;            
