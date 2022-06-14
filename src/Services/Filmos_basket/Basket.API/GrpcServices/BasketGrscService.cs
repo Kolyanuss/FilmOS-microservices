@@ -100,17 +100,14 @@ namespace Basket.API.GrpcServices
 
         public async Task<bool> DeleteCardInBasket(ShoppingCart card)
         {
-            foreach (var item in card.Items)
+            var basketModel = new BasketModel() { IdUser = int.Parse(card.UserId) };
+            var Request = new DeleteBasketRequest { Basket = basketModel };
+
+            if ((await _BasketClient.DeleteBasketAsync(Request)).Success == false)
             {
-                var basketModel = _mapper.Map<BasketModel>(item);
-                basketModel.IdUser = int.Parse(card.UserId);
-                var Request = new DeleteBasketRequest { Basket = basketModel };
-                
-                if (_BasketClient.DeleteBasketAsync(Request).ResponseAsync.Result.Success == false)
-                {
-                    return false;
-                }
+                return false;
             }
+
             return true;
         }
     }
