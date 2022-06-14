@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Grpc.Core;
 using Shoping.DAL.EntitiesDTO;
-using Shoping.DAL.Exceptions.Abstract;
 using Shoping.DAL.Interfaces.SQLInterfaces.ISQLServices;
 using Shoping.GRPC.Maper;
 using Shoping.GRPC.Protos;
@@ -39,14 +38,7 @@ namespace Shoping.GRPC.Services
 
             foreach (var basket in sqlBasketList)
             {
-                await responseStream.WriteAsync(new BasketModel()
-                {
-                    IdObject = basket.id_film,
-                    TypeObject = "Films",
-                    IdUser = basket.id_user,
-                    Quantity = 1,
-                    Price = 100
-                });
+                await responseStream.WriteAsync(_mapper.Map<BasketModel>(basket));
             }
         }
 
@@ -67,14 +59,7 @@ namespace Shoping.GRPC.Services
             // find price
             foreach (var basket in sqlBasketList)
             {
-                await responseStream.WriteAsync(new BasketModel()
-                {
-                    IdObject = basket.id_film,
-                    TypeObject = "Films",
-                    IdUser = basket.id_user,
-                    Quantity = 1, // stub
-                    Price = 100 // stub
-                });
+                await responseStream.WriteAsync(_mapper.Map<BasketModel>(basket));
             }
         }
 
