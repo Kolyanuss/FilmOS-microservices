@@ -23,7 +23,8 @@ namespace Shoping.DAL.Services.SQL_Services
 
         public async Task<(int, int)> AddBasketFilm(SQLBasketFilmsDTO BasketFilm)
         {
-            if (_UnitOfWork.BasketFilmsRepo.GetByTwoId(BasketFilm.id_film, BasketFilm.id_user) != null)
+            var item = await _UnitOfWork.BasketFilmsRepo.GetByTwoId(BasketFilm.id_film, BasketFilm.id_user);
+            if (item == null)
             {
                 var rez = _mapper.Map<SQLBasketFilms>(BasketFilm);
                 return await _UnitOfWork.BasketFilmsRepo.Add(rez);
@@ -33,7 +34,7 @@ namespace Shoping.DAL.Services.SQL_Services
 
         public async Task DeleteBasketFilm(int idUser)
         {
-            if (_UnitOfWork.BasketFilmsRepo.GetByIdUsers(idUser) != null)
+            if (await _UnitOfWork.BasketFilmsRepo.GetByIdUsers(idUser) != null)
             {
                 await _UnitOfWork.BasketFilmsRepo.Delete(idUser);
             }
@@ -41,7 +42,7 @@ namespace Shoping.DAL.Services.SQL_Services
 
         public async Task DeleteBasketFilm(int idFilm, int idUser)
         {
-            if (_UnitOfWork.BasketFilmsRepo.GetByTwoId(idFilm, idUser) != null)
+            if (await _UnitOfWork.BasketFilmsRepo.GetByTwoId(idFilm, idUser) != null)
             {
                 await _UnitOfWork.BasketFilmsRepo.Delete(idFilm, idUser);
             }
