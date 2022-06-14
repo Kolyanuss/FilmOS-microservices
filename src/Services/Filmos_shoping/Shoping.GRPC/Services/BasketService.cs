@@ -84,24 +84,25 @@ namespace Shoping.GRPC.Services
 
         public override async Task<StatusResponse> DeleteBasket(DeleteBasketRequest request, ServerCallContext context)
         {
-            if (request.Basket.TypeObject == "Film" || request.Basket.TypeObject == "Films")
+            try
             {
-                try
+                if (request.Basket.IdObject <= 0)
                 {
-                    if (request.Basket.IdObject <= 0)
-                    {
-                        await _SqlBasketFilmServise.DeleteBasketFilm(request.Basket.IdUser);
-                    }
-                    else await _SqlBasketFilmServise.DeleteBasketFilm(request.Basket.IdObject, request.Basket.IdUser);
+                    await _SqlBasketFilmServise.DeleteBasketFilm(request.Basket.IdUser);
+                    // to do: add delete for subscription service
                 }
-                catch (Exception ex)
+                else
+                if (request.Basket.TypeObject == "Film" || request.Basket.TypeObject == "Films")
                 {
-                    throw new RpcException(new Status(StatusCode.Internal, ex.Message));
+                    await _SqlBasketFilmServise.DeleteBasketFilm(request.Basket.IdObject, request.Basket.IdUser);
                 }
+
                 return new StatusResponse { Success = true };
             }
-
-            return new StatusResponse { Success = false };
+            catch (Exception ex)
+            {
+                throw new RpcException(new Status(StatusCode.Internal, ex.Message));
+            }
         }
     }
 }
