@@ -61,8 +61,12 @@ namespace Shoping.DAL.Repositories.SQL_Repositories
 
         public async Task<SQLBasketFilms> GetByTwoId(int IdFilm, int IdUser)
         {
-            return ((List<SQLBasketFilms>)await Get("SELECT * FROM " + _tableName + 
-                " WHERE id_film=" + IdFilm + " AND id_user" + IdUser)).ToArray()[0];
+            var list = (List<SQLBasketFilms>)await Get("SELECT * FROM " + _tableName + " WHERE id_film=" + IdFilm + " AND id_user=" + IdUser);
+            if (list.Count <=0 )
+            {
+                return null;
+            }
+            return list[0];
         }
 
         public async Task<IEnumerable<int>> GetAllIdByUserName(string UserName)
