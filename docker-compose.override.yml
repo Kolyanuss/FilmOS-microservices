@@ -2,25 +2,28 @@ version: '3.4'
 
 services:
   redisdb:
-    container_name: redisdb
+    container_name: redisDB_compose
     restart: always    
     ports:
         - "6379:6379"
 
   mongodb:
-    container_name: mongodb
+    container_name: mongodb_compose
     restart: always
     ports:
         - "27017:27017"
 
   mssqldb:
-    container_name: mssqldb
+    container_name: mssqlDB_compose
     restart: always
+    environment:
+        SA_PASSWORD: "SwN12345678"
+        ACCEPT_EULA: "Y"
     ports:
         - "1433:1433"
 
   rabbitmq:
-    container_name: RabbitMQ
+    container_name: RabbitMQ_compose
     restart: always
     ports:
         - "5672:5672"
@@ -28,6 +31,7 @@ services:
 
 
   basket.api:
+    container_name: Basket.API_compose
     environment:
       - ASPNETCORE_ENVIRONMENT=Docker
       - "CacheSettings:ConnectionString=redisdb:6379"
@@ -37,7 +41,7 @@ services:
       - "8001:80"
 
   rating.api:
-    container_name: Rating.API
+    container_name: Rating.API_compose
     environment:
       - ASPNETCORE_ENVIRONMENT=Docker
       - "FilmosDatabase:ConnectionString=mongodb://mongodb:27017"
@@ -51,7 +55,7 @@ services:
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
 
   favorite.api:
-    container_name: Favorite.API
+    container_name: Favorite.API_compose
     environment:
       - ASPNETCORE_ENVIRONMENT=Docker
       - "EventBusSettings:HostAddress=amqp://guest:guest@rabbitmq:5672"
@@ -64,7 +68,7 @@ services:
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
 
   ocelotapigw:
-    container_name: OcelotAPIGW
+    container_name: OcelotAPIGW_compose
     environment:
       - ASPNETCORE_ENVIRONMENT=Docker
     depends_on:
@@ -72,3 +76,23 @@ services:
       - rating.api
     ports:
       - "8010:80"
+
+  elasticsearch:
+    container_name: elasticsearch_compose
+    environment:
+        - xpack.watcher.enabled=false
+        - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+        - discovery.type=single-node
+    ports:
+        - "9200:9200"
+    volumes:
+        - elasticsearch-data:/usr/share/elasticsearch/data
+
+  kibana:
+    container_name: kibana_compose
+    environment:        
+        - ELASTICSEARCH_URL=http://elasticsearch:9200
+    depends_on:
+        - elasticsearch
+    ports:
+        - "5601:5601"  
