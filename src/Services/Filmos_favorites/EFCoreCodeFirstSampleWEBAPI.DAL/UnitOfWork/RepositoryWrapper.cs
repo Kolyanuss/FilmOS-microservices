@@ -1,6 +1,10 @@
 ﻿using EFCoreCodeFirstSampleWEBAPI.DAL.Interfaces;
 using EFCoreCodeFirstSampleWEBAPI.DAL.Interfaces.ISQLRepositories;
+using EFCoreCodeFirstSampleWEBAPI.DAL.Models;
+using EFCoreCodeFirstSampleWEBAPI.DAL.Repository;
 using EFCoreCodeFirstSampleWEBAPI.DAL.Repository.SQLRepositories;
+using Microsoft.Extensions.Logging;
+using System;
 
 namespace EFCoreCodeFirstSampleWEBAPI.DAL.UnitOfWork
 {
@@ -11,9 +15,14 @@ namespace EFCoreCodeFirstSampleWEBAPI.DAL.UnitOfWork
         private IFilmsRepository _films;
         private IFilmsUsersRepository _filmsUsers;
 
-        public RepositoryWrapper(MyAppContext myAppContext)
+        private readonly ILogger<IFilmsRepository> _logger;
+        private readonly ILogger<RepositoryBase<Films>> _loggerBase;
+
+        public RepositoryWrapper(MyAppContext myAppContext, ILogger<FilmsRepository> logger, ILogger<RepositoryBase<Films>> baseloger)
         {
             _myAppContext = myAppContext;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _loggerBase = baseloger ?? throw new ArgumentNullException(nameof(baseloger));
         }
 
         public IUserRepository User
@@ -34,7 +43,7 @@ namespace EFCoreCodeFirstSampleWEBAPI.DAL.UnitOfWork
             {
                 if (_films == null)
                 {
-                    _films = new FilmsRepository(_myAppContext);
+                    _films = new FilmsRepository(_myAppContext, _logger, _loggerBase);
                 }
                 return _films;
             }

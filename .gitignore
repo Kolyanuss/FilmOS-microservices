@@ -328,3 +328,7 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
+/docs/structuredLog.json
+/docs/log.txt
+/src/Services/Filmos_favorites/EFCoreCodeFirstSampleWEBAPI/E___Code_____Programing__Lab_UniversityProjectsFilmOS-microservicesdocslog.txt
+/src/Services/Filmos_favorites/EFCoreCodeFirstSampleWEBAPI/E___Code_____Programing__Lab_UniversityProjectsFilmOS-microservicesdocsstructuredLog.json

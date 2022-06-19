@@ -2,7 +2,7 @@
 {
     public class SQLBasketFilmsDTO
     {
-        public long id_film { get; set; }
-        public long id_user { get; set; }
+        public int id_film { get; set; }
+        public int id_user { get; set; }
     }
 }

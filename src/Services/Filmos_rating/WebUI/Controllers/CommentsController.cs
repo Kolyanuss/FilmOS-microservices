@@ -6,18 +6,27 @@ using Filmos_Rating_CleanArchitecture.Application.Comment.Queries.GetCommentList
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Threading.Tasks;
 
 namespace Filmos_Rating_CleanArchitecture.WebUI.Controllers
 {
     public class CommentsController : BaseController
     {
+        private readonly ILogger<CommentsController> _logger;
+        public CommentsController(ILogger<CommentsController> logger)
+        {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        }
+
         [HttpGet]
         [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<CommentListVm>> GetAll()
         {
+            _logger.LogInformation("Getting all coments. Test num: {customPropery}", 6);
             return Ok(await Mediator.Send(new GetCommentListQuery()));
         }
 
