@@ -13,6 +13,7 @@ namespace EFCoreCodeFirstSampleWEBAPI.Controllers
 {
     [Route("api/films")]
     [ApiController]
+    [Authorize]
     public class FilmsController : ControllerBase
     {
         private readonly IServiceManager _serviceManager;
