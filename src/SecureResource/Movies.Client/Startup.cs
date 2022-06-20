@@ -96,7 +96,7 @@ namespace Movies.Client
                     options.ClaimActions.DeleteClaim("auth_time");
                     options.ClaimActions.MapUniqueJsonKey("role", "role");
 
-                    options.Scope.Add("movieAPI");
+                    options.Scope.Add("EFCoreCodeFirstSampleWEBAPI");
 
                     options.SaveTokens = true;
                     options.GetClaimsFromUserInfoEndpoint = true;
