@@ -1,5 +1,22 @@
 ﻿{
   "Routes": [
+    //Movie API -- https://localhost:8000/api/films
+    {
+      "DownstreamPathTemplate": "/api/films",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "8000"
+        }
+      ],
+      "UpstreamPathTemplate": "/movies",
+      "UpstreamHttpMethod": [ "GET", "POST"],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "IdentityApiKey",
+        "AllowedScopes": []
+      }
+    },
     //Rating API
     //films
     {
