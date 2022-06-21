@@ -48,7 +48,7 @@ namespace EFCoreCodeFirstSampleWEBAPI.Controllers
 
         // GET: api/Films/5
         [HttpGet("{id}", Name = "FilmById")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
