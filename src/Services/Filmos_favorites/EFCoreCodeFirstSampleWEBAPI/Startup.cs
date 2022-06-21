@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 
@@ -31,15 +32,34 @@ namespace EFCoreCodeFirstSampleWEBAPI
             services.AddDbContext<MyAppContext>(opts => opts.UseSqlServer(Configuration["ConnectionString:FirstConect"]));
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
             services.AddScoped<IServiceManager, ServiceManager>();
+            
+            // Identity config
+            services.AddAuthentication("Bearer")
+                .AddJwtBearer("Bearer", options =>
+                {
+                    options.Authority = "https://localhost:5005";
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateAudience = false
+                    };
+                });
+
+            /*services.AddAuthorization(options =>
+            {
+                options.AddPolicy("ClientIdPolicy", policy => policy.RequireClaim("client_id", "favoritesClient", "movies_mvc_client"));
+            });*/
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "EFCoreCodeFirstSampleWEBAPI", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "FilmOS Favorite", Version = "v1.1" });
             });
 
             // MassTransit-RabbitMQ Configuration
-            services.AddMassTransit(config => {
-                config.UsingRabbitMq((ctx, cfg) => {
+            services.AddMassTransit(config =>
+            {
+                config.UsingRabbitMq((ctx, cfg) =>
+                {
                     cfg.Host(Configuration["EventBusSettings:HostAddress"]);
                 });
             });
@@ -59,6 +79,7 @@ namespace EFCoreCodeFirstSampleWEBAPI
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

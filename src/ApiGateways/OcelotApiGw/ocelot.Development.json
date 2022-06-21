@@ -1,5 +1,22 @@
 ﻿{
   "Routes": [
+    //Movie API -- http://localhost:8000/api/films
+    {
+      "DownstreamPathTemplate": "/api/films",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "8000"
+        }
+      ],
+      "UpstreamPathTemplate": "/movies",
+      "UpstreamHttpMethod": [ "GET"],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "IdentityApiKey",
+        "AllowedScopes": []
+      }
+    },
     //Rating API
     //films
     {
@@ -8,7 +25,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": "8002"
+          "Port": "8003"
         }
       ],
       "UpstreamPathTemplate": "/Rating/Films",
@@ -21,7 +38,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": "8002"
+          "Port": "8003"
         }
       ],
       "UpstreamPathTemplate": "/Rating/Films/{id}",
@@ -35,7 +52,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": "8002"
+          "Port": "8003"
         }
       ],
       "UpstreamPathTemplate": "/Rating/Users",
@@ -63,7 +80,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": "8003"
+          "Port": "8000"
         }
       ],
       "UpstreamPathTemplate": "/Favorit/Films/{id}",
@@ -76,7 +93,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": "8003"
+          "Port": "8000"
         }
       ],
       "UpstreamPathTemplate": "/Favorit/Films/{id}/desc",
@@ -90,7 +107,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": "44313"
+          "Port": "8000"
         }
       ],
       "UpstreamPathTemplate": "/Favorit/Users",
@@ -103,7 +120,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": "8003"
+          "Port": "8000"
         }
       ],
       "UpstreamPathTemplate": "/Favorit/Users/{id}",
@@ -117,7 +134,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": "8003"
+          "Port": "8000"
         }
       ],
       "UpstreamPathTemplate": "/Favorit/FilmsUsers",
@@ -130,7 +147,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": "8003"
+          "Port": "8000"
         }
       ],
       "UpstreamPathTemplate": "/Favorit/FilmsUsers/{id1}/{id2}",
@@ -143,7 +160,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": "8003"
+          "Port": "8000"
         }
       ],
       "UpstreamPathTemplate": "/Favorit/FilmsUsers/{id1}/{id2}/info",
@@ -156,7 +173,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": "8003"
+          "Port": "8000"
         }
       ],
       "UpstreamPathTemplate": "/Favorit/FilmsUsers/filmsbyuser/{id1}",
@@ -169,7 +186,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": "8003"
+          "Port": "8000"
         }
       ],
       "UpstreamPathTemplate": "/Favorit/FilmsUsers/usersbyfilm/{id1}",
@@ -183,7 +200,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": "14184"
+          "Port": "8001"
         }
       ],
       "UpstreamPathTemplate": "/Basket/{userName}",
@@ -195,7 +212,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": "14184"
+          "Port": "8001"
         }
       ],
       "UpstreamPathTemplate": "/Basket",
@@ -203,6 +220,6 @@
     }
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "http://localhost:5010"
+    "BaseUrl": "https://localhost:8010"
   }
 }

@@ -11,8 +11,9 @@ using System.Threading.Tasks;
 
 namespace EFCoreCodeFirstSampleWEBAPI.Controllers
 {
-    [Route("api/films")]
+    [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class FilmsController : ControllerBase
     {
         private readonly IServiceManager _serviceManager;
@@ -47,7 +48,7 @@ namespace EFCoreCodeFirstSampleWEBAPI.Controllers
 
         // GET: api/Films/5
         [HttpGet("{id}", Name = "FilmById")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]

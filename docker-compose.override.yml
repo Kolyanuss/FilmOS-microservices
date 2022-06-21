@@ -63,7 +63,7 @@ services:
       - mssqldb
       - rabbitmq
     ports:
-      - "8003:80"
+      - "8000:80"
     volumes:
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
 
