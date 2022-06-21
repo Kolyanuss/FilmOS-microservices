@@ -19,8 +19,8 @@
     },
     "EFCoreCodeFirstSampleWEBAPI": {
       "commandName": "Project",
-      "launchBrowser": true,
-      "launchUrl": "api/films",
+      //"launchBrowser": true,
+      //"launchUrl": "api/films",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
