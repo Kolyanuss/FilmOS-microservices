@@ -1,9 +1,9 @@
 ﻿{
   "Routes": [
-    //Movie API -- http://localhost:8000/api/films
+    //Movie API -- https://localhost:8000/api/films
     {
       "DownstreamPathTemplate": "/api/films",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
