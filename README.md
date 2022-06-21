@@ -29,11 +29,8 @@ The development stage is underway.
 * **Shopping API -> http://localhost:8002/swagger/index.html**
 * **Rating API -> http://localhost:8003/swagger/index.html**
 
-* **API Gateway -> http://host.docker.internal:8010/Catalog**
-* **Rabbit Management Dashboard -> http://host.docker.internal:15672**   -- guest/guest
+* **API Gateway -> http://localhost:43294/**
+* **Rabbit Management Dashboard -> http://localhost:15672**   -- guest/guest
 
-* **Elasticsearch -> http://host.docker.internal:9200**
-* **Kibana -> http://host.docker.internal:5601**
-
-* **Web Status -> http://host.docker.internal:8007**
-* **Web UI -> http://host.docker.internal:8006**
+* **Elasticsearch -> http://localhost:9200**
+* **Kibana -> http://localhost:5601**
