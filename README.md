@@ -3,11 +3,14 @@ In this project I try to implement a microservice following all the rules.
 The development stage is underway.
 
 ## Projects:
-* Favorite
-* Shopping
-* Rating
-* Basket
-* OcelotApiGW
+* Favorite API
+* Shopping API
+* Rating API
+* Basket API
+* Ocelot ApiGW
+* Shopping GRPC server
+* IdentityServer
+* Movies.Client
 
 ## Used technologies:
 * mssql server
@@ -26,8 +29,8 @@ The development stage is underway.
 
 * **Faforite API -> http://localhost:8000/swagger/index.html**
 * **Basket API -> http://localhost:8001/swagger/index.html**
-* **Shopping API -> http://localhost:8002/swagger/index.html**
-* **Rating API -> http://localhost:8003/swagger/index.html**
+* **Rating API -> http://localhost:8002/swagger/index.html**
+* **Shopping API -> http://localhost:8003/swagger/index.html**
 
 * **API Gateway -> http://localhost:43294/**
 * **Rabbit Management Dashboard -> http://localhost:15672**   -- guest/guest
