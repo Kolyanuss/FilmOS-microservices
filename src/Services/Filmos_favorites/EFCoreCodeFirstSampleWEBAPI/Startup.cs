@@ -49,6 +49,11 @@ namespace EFCoreCodeFirstSampleWEBAPI
                     };
                 });
 
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("ClientIdPolicy", policy => policy.RequireClaim("client_id", "favoritesClient"));
+            });
+
             // MassTransit-RabbitMQ Configuration
             services.AddMassTransit(config =>
             {

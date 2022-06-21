@@ -11,9 +11,9 @@ using System.Threading.Tasks;
 
 namespace EFCoreCodeFirstSampleWEBAPI.Controllers
 {
-    [Route("api/films")]
+    [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    [Authorize("ClientIdPolicy")]
     public class FilmsController : ControllerBase
     {
         private readonly IServiceManager _serviceManager;
