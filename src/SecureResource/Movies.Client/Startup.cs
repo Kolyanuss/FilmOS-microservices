@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using IdentityModel;
 using IdentityModel.Client;
@@ -35,18 +36,25 @@ namespace Movies.Client
             services.AddControllersWithViews();
             services.AddScoped<IMovieApiService, MovieApiService>();
 
-
             // http operations
 
             // 1 create an HttpClient used for accessing the Movies.API
             services.AddTransient<AuthenticationDelegatingHandler>();
-           
+
             services.AddHttpClient("MovieAPIClient", client =>
             {
                 client.BaseAddress = new Uri("https://localhost:8010/"); // API GATEWAY URL
                 client.DefaultRequestHeaders.Clear();
                 client.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
-            }).AddHttpMessageHandler<AuthenticationDelegatingHandler>();
+            })
+            .AddHttpMessageHandler<AuthenticationDelegatingHandler>();
+            /*.ConfigurePrimaryHttpMessageHandler(() =>
+            {
+                var httpHandler = new HttpClientHandler();
+                httpHandler.ServerCertificateCustomValidationCallback =
+                    HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+                return httpHandler;
+            });*/
 
 
             // 2 create an HttpClient used for accessing the IDP

@@ -32,7 +32,8 @@ The development stage is underway.
 * **Rating API -> http://localhost:8002/swagger/index.html**
 * **Shopping API -> http://localhost:8003/swagger/index.html**
 
-* **API Gateway -> http://localhost:43294/**
+* **API Gateway -> https://localhost:8010/**
+* **Identity Server -> https://localhost:5005/**
 * **Rabbit Management Dashboard -> http://localhost:15672**   -- guest/guest
 
 * **Elasticsearch -> http://localhost:9200**

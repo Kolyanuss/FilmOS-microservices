@@ -44,7 +44,10 @@ namespace IdentityServer
                 {
                     IdentityServerConstants.StandardScopes.OpenId,
                     IdentityServerConstants.StandardScopes.Profile,
+                    IdentityServerConstants.StandardScopes.Address,
+                    IdentityServerConstants.StandardScopes.Email,
                     "EFCoreCodeFirstSampleWEBAPI",
+                    "roles"
                 }
             }
         };
@@ -61,7 +64,13 @@ namespace IdentityServer
         new IdentityResource[]
         {
             new IdentityResources.OpenId(),
-            new IdentityResources.Profile()
+            new IdentityResources.Profile(),
+            new IdentityResources.Address(),
+            new IdentityResources.Email(),
+            new IdentityResource(
+                "roles",
+                "Your role(s)",
+                new List<string>() { "role" })
         };
         public static List<TestUser> TestUsers =>
         new List<TestUser>
@@ -70,7 +79,7 @@ namespace IdentityServer
             {
                 SubjectId = "5BE86359-073C-434B-AD2D-A3932222DABE",
                 Username = "Nikolas",
-                Password = "Nikolas1",
+                Password = "swn",
                 Claims = new List<Claim>
                 {
                     new Claim(JwtClaimTypes.GivenName, "Nikolay"),
