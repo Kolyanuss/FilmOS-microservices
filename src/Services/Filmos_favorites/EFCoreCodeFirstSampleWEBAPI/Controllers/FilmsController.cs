@@ -13,7 +13,7 @@ namespace EFCoreCodeFirstSampleWEBAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize("ClientIdPolicy")]
+    [Authorize]
     public class FilmsController : ControllerBase
     {
         private readonly IServiceManager _serviceManager;
