@@ -2,6 +2,8 @@ using EFCoreCodeFirstSampleWEBAPI.BLL.DataTransferObjects;
 using EFCoreCodeFirstSampleWEBAPI.BLL.Interfaces;
 using EFCoreCodeFirstSampleWEBAPI.Controllers;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Moq;
 using System.Collections.Generic;
 using Xunit;
 
@@ -12,11 +14,13 @@ namespace EFCoreCodeFirstSampleWEBAPI.UnitTests.Controller
         private readonly IServiceManager _service;
         private readonly FilmsController _controller;
         private readonly FilmsForCreationDto _testFilm = new FilmsForCreationDto() { Country = "USA" };
+        private readonly Mock<ILogger<FilmsController>> _loggerMoq;
 
         public FilmsControllerTest()
         {
             _service = new ServiceManagerFake();
-            _controller = new FilmsController(_service);
+            _loggerMoq = new Mock<ILogger<FilmsController>>();
+            _controller = new FilmsController(_service, _loggerMoq.Object);
         }
 
         [Fact]

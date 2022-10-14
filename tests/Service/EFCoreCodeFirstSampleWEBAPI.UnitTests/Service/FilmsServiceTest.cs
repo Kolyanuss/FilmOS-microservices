@@ -6,6 +6,7 @@ using EFCoreCodeFirstSampleWEBAPI.BLL.Services.SQLServices;
 using EFCoreCodeFirstSampleWEBAPI.DAL.Models;
 using EFCoreCodeFirstSampleWEBAPI.UnitTests.Service.Mocks;
 using MassTransit;
+using Microsoft.Extensions.Logging;
 using Moq;
 using System.Threading.Tasks;
 using Xunit;
@@ -17,6 +18,7 @@ namespace EFCoreCodeFirstSampleWEBAPI.UnitTests.Service
         private readonly Mapper _mapper;
         private readonly FakeRepositoryWrapper _repoWraper;
         private readonly Mock<IPublishEndpoint> _publishEndpoint;
+        private readonly Mock<ILogger<FilmsService>> _loggerMoq;
 
         public FilmsServiceTest()
         {
@@ -26,6 +28,12 @@ namespace EFCoreCodeFirstSampleWEBAPI.UnitTests.Service
             _mapper = new Mapper(config);
             _repoWraper = new FakeRepositoryWrapper();
             _publishEndpoint = new Mock<IPublishEndpoint>();
+            _loggerMoq = new Mock<ILogger<FilmsService>>();
+        }
+
+        private FilmsService createNewFilmsService()
+        {
+            return new FilmsService(_repoWraper, _mapper, _publishEndpoint.Object, _loggerMoq.Object);
         }
 
         [Fact]
@@ -35,7 +43,7 @@ namespace EFCoreCodeFirstSampleWEBAPI.UnitTests.Service
             _repoWraper._films.Setup(x => x.GetByIdAsync(It.IsAny<int>()))
                           .Returns(Task.FromResult(new Films()));
 
-            var service = new FilmsService(_repoWraper, _mapper, _publishEndpoint.Object);
+            var service = createNewFilmsService();
 
             //Act
             var Result = service.GetById(1);
@@ -52,7 +60,7 @@ namespace EFCoreCodeFirstSampleWEBAPI.UnitTests.Service
             _repoWraper._films.Setup(x => x.GetByIdAsync(It.IsAny<int>()))
                           .Returns(Task.FromResult(film));
 
-            var service = new FilmsService(_repoWraper, _mapper, _publishEndpoint.Object);
+            var service = createNewFilmsService();
 
             //Act + Assert            
             await Assert.ThrowsAsync<FilmsNotFoundException>(() => service.GetById(1));
@@ -65,7 +73,7 @@ namespace EFCoreCodeFirstSampleWEBAPI.UnitTests.Service
             _repoWraper._films.Setup(x => x.GetByIdWithDetailsAsync(It.IsAny<int>()))
                           .Returns(Task.FromResult(new Films()));
 
-            var service = new FilmsService(_repoWraper, _mapper, _publishEndpoint.Object);
+            var service = createNewFilmsService();
 
             //Act
             var Result = service.GetWithDetailsById(1);
@@ -82,7 +90,7 @@ namespace EFCoreCodeFirstSampleWEBAPI.UnitTests.Service
             _repoWraper._films.Setup(x => x.GetByIdWithDetailsAsync(It.IsAny<int>()))
                           .Returns(Task.FromResult(film));
 
-            var service = new FilmsService(_repoWraper, _mapper, _publishEndpoint.Object);
+            var service = createNewFilmsService();
 
             //Act + Assert            
             await Assert.ThrowsAsync<FilmsNotFoundException>(() => service.GetWithDetailsById(1));
@@ -92,7 +100,7 @@ namespace EFCoreCodeFirstSampleWEBAPI.UnitTests.Service
         public async Task Post_ValidDtoPassed_ReturnsTaskFilmsDTO()
         {
             //Arrange
-            var service = new FilmsService(_repoWraper, _mapper, _publishEndpoint.Object);
+            var service = createNewFilmsService();
             var filmDto = new FilmsForCreationDto() { NameFilm = "valid" };
 
             //Act
@@ -108,7 +116,7 @@ namespace EFCoreCodeFirstSampleWEBAPI.UnitTests.Service
         public async Task Post_InvalidDtoPassed_ReturnsBadRequestException()
         {
             //Arrange
-            var service = new FilmsService(_repoWraper, _mapper, _publishEndpoint.Object);
+            var service = createNewFilmsService();
             var filmDto = new FilmsForCreationDto();
 
             //Act + Assert            
@@ -120,7 +128,7 @@ namespace EFCoreCodeFirstSampleWEBAPI.UnitTests.Service
         public async Task Post_InvalidNullDtoPassed_ReturnsBadRequestException()
         {
             //Arrange
-            var service = new FilmsService(_repoWraper, _mapper, _publishEndpoint.Object);
+            var service = createNewFilmsService();
             FilmsForCreationDto filmDto = null;
 
             //Act + Assert            
@@ -132,7 +140,7 @@ namespace EFCoreCodeFirstSampleWEBAPI.UnitTests.Service
         public async Task Put_ValidIdAndDtoPassed_NoReturns()
         {
             //Arrange
-            var service = new FilmsService(_repoWraper, _mapper, _publishEndpoint.Object);
+            var service = createNewFilmsService();
             var id = 1;
             var filmDto = new FilmsForCreationDto() { NameFilm = "valid" };
             Films Film = new Films();
@@ -152,7 +160,7 @@ namespace EFCoreCodeFirstSampleWEBAPI.UnitTests.Service
         public async Task Put_InvalidDtoPassed_ReturnsBadRequestException()
         {
             //Arrange
-            var service = new FilmsService(_repoWraper, _mapper, _publishEndpoint.Object);
+            var service = createNewFilmsService();
             var id = 1;
             var filmDto = new FilmsForCreationDto();
 
@@ -165,7 +173,7 @@ namespace EFCoreCodeFirstSampleWEBAPI.UnitTests.Service
         public async Task Put_InvalidNullDtoPassed_ReturnsBadRequestException()
         {
             //Arrange
-            var service = new FilmsService(_repoWraper, _mapper, _publishEndpoint.Object);
+            var service = createNewFilmsService();
             var id = 1;
             FilmsForCreationDto filmDto = null;
 
@@ -178,7 +186,7 @@ namespace EFCoreCodeFirstSampleWEBAPI.UnitTests.Service
         public async Task Put_InvalidIdPassed_ReturnsFilmsNotFoundException()
         {
             //Arrange
-            var service = new FilmsService(_repoWraper, _mapper, _publishEndpoint.Object);
+            var service = createNewFilmsService();
             var id = 1;
             var filmDto = new FilmsForCreationDto() { NameFilm = "valid" };
             Films nullFilm = null;
@@ -195,7 +203,7 @@ namespace EFCoreCodeFirstSampleWEBAPI.UnitTests.Service
         public async Task Delete_ValidIdPassed_NoReturns()
         {
             //Arrange
-            var service = new FilmsService(_repoWraper, _mapper, _publishEndpoint.Object);
+            var service = createNewFilmsService();
             var id = 1;
             Films Film = new Films();
 
@@ -214,7 +222,7 @@ namespace EFCoreCodeFirstSampleWEBAPI.UnitTests.Service
         public async Task Delete_InvalidIdPassed_ReturnsFilmsNotFoundException()
         {
             //Arrange
-            var service = new FilmsService(_repoWraper, _mapper, _publishEndpoint.Object);
+            var service = createNewFilmsService();
             var id = 1;
             Films nullFilm = null;
 
