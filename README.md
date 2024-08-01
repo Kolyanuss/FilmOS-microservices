@@ -1,5 +1,9 @@
 # FilmOS-microservices
 
+This project is designed to acquire skills in developing microservices.
+
+The project is incomplete and has bugs.
+
 FilmOS-microservices is a microservices-based architecture project designed for managing various aspects of a movie platform, including favorite movies, ratings, shopping, and more. Each microservice is responsible for a specific functionality and communicates with others to provide a cohesive experience.
 
 ## Table of Contents
