@@ -34,7 +34,6 @@ namespace Shoping.DAL.Repositories.SQL_Repositories
             var list = new List<SQLBasketFilms>();
             using (SqlConnection connection = (SqlConnection)_connectionFactory.GetSqlAsyncConnection)
             {
-                
                 SqlCommand command = new SqlCommand(sqlExpression, connection);
                 using (SqlDataReader reader = await command.ExecuteReaderAsync())
                 {
@@ -55,12 +54,46 @@ namespace Shoping.DAL.Repositories.SQL_Repositories
             return await Get("SELECT * FROM " + _tableName);
         }
 
-        public async Task<IEnumerable<SQLBasketFilms>> GetByIdFilms(long Id)
+        public async Task<IEnumerable<SQLBasketFilms>> GetByIdFilms(int Id)
         {
             return await Get("SELECT * FROM " + _tableName + " WHERE id_film=" + Id);
         }
 
-        public async Task<IEnumerable<SQLBasketFilms>> GetByIdUsers(long Id)
+        public async Task<SQLBasketFilms> GetByTwoId(int IdFilm, int IdUser)
+        {
+            var list = (List<SQLBasketFilms>)await Get("SELECT * FROM " + _tableName + " WHERE id_film=" + IdFilm + " AND id_user=" + IdUser);
+            if (list.Count <=0 )
+            {
+                return null;
+            }
+            return list[0];
+        }
+
+        public async Task<IEnumerable<int>> GetAllIdByUserName(string UserName)
+        {// thah function must return all users id by username
+            string sqlExpression =
+                @"SELECT Id FROM Users
+                WHERE Users.user_name= '" + UserName + "'";
+
+            var list = new List<int>();
+            using (SqlConnection connection = (SqlConnection)_connectionFactory.GetSqlAsyncConnection)
+            {
+                SqlCommand command = new SqlCommand(sqlExpression, connection);
+                using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                {
+                    if (reader.HasRows)
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            list.Add(reader.GetInt32(0));
+                        }
+                    }
+                }
+            }
+            return list;
+        }
+
+        public async Task<IEnumerable<SQLBasketFilms>> GetByIdUsers(int Id)
         {
             // название процедуры
             string sqlExpression = "Show_basket_films_by_id_user";
@@ -122,7 +155,7 @@ namespace Shoping.DAL.Repositories.SQL_Repositories
             return list;
         }
 
-        public async Task<(long,long)> Add(SQLBasketFilms entity)
+        public async Task<(int, int)> Add(SQLBasketFilms entity)
         {
             string sqlExpression = string.Format(
                 @"INSERT INTO {0} (id_film, id_user) VALUES ({1},{2})",
@@ -136,7 +169,7 @@ namespace Shoping.DAL.Repositories.SQL_Repositories
             }
         }
 
-        public async Task Delete(long id_film, long id_user)
+        public async Task Delete(int id_film, int id_user)
         {
             string sqlExpression = string.Format(
             @"DELETE FROM {0}
@@ -150,7 +183,7 @@ namespace Shoping.DAL.Repositories.SQL_Repositories
             }
         }
 
-        public async Task Delete(long idUser) // dellete all record by user id
+        public async Task Delete(int idUser) // dellete all record by user id
         {
             string sqlExpression = string.Format(
             @"DELETE FROM {0}

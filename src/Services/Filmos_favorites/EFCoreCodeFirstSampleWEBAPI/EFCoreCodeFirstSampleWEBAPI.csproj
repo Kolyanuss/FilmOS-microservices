@@ -9,6 +9,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="E___Code_____Programing__Lab_UniversityProjectsFilmOS-microservicesdocsstructuredLog.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="E___Code_____Programing__Lab_UniversityProjectsFilmOS-microservicesdocslog.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.17">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

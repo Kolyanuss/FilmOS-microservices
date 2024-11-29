@@ -8,7 +8,7 @@ namespace Filmos_Rating_CleanArchitecture.Persistence
         public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
         {
             /*services.AddDbContext<FilmosDbContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("NorthwindDatabase")));*/
+                options.UseSqlServer(configuration.GetConnectionString("Database")));*/
 
             //services.AddScoped<IFilmosDbContext>(provider => provider.GetService<FilmosDbContext>());
 

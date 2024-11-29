@@ -5,6 +5,8 @@ using EFCoreCodeFirstSampleWEBAPI.BLL.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Threading.Tasks;
 
 namespace EFCoreCodeFirstSampleWEBAPI.Controllers
@@ -14,7 +16,13 @@ namespace EFCoreCodeFirstSampleWEBAPI.Controllers
     public class FilmsController : ControllerBase
     {
         private readonly IServiceManager _serviceManager;
-        public FilmsController(IServiceManager serviceManager) => _serviceManager = serviceManager;
+        private readonly ILogger<FilmsController> _logger;
+
+        public FilmsController(IServiceManager serviceManager, ILogger<FilmsController> logger)
+        {
+            _serviceManager = serviceManager;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        }
 
         // GET: api/Films
         [HttpGet]
@@ -25,11 +33,14 @@ namespace EFCoreCodeFirstSampleWEBAPI.Controllers
         {
             try
             {
+                _logger.LogInformation("In " + this.GetType() + " call FilmsService.GetAll()");
                 var Result = await _serviceManager.FilmsService.GetAll();
+                _logger.LogInformation("Sucsefully get all film");
                 return Ok(Result);
             }
             catch (System.Exception ex)
             {
+                _logger.LogError("Some error: ", ex.Message);
                 return StatusCode(500, ex.Message);
             }
         }
@@ -44,11 +55,13 @@ namespace EFCoreCodeFirstSampleWEBAPI.Controllers
         {
             try
             {
+                _logger.LogInformation("In " + this.GetType() + " call FilmsService.GetById()");
                 var Result = await _serviceManager.FilmsService.GetById(id);
                 return Ok(Result);
             }
             catch (FilmsNotFoundException)
             {
+                _logger.LogError("Film found");
                 return NotFound("No item found with index " + id);
             }
             catch (System.Exception)
@@ -62,6 +75,7 @@ namespace EFCoreCodeFirstSampleWEBAPI.Controllers
         {
             try
             {
+                _logger.LogInformation("In " + this.GetType() + " call FilmsService.GetByIdSpec()");
                 var Result = await _serviceManager.FilmsService.GetByIdSpec(id);
                 return Ok(Result);
             }
@@ -85,6 +99,7 @@ namespace EFCoreCodeFirstSampleWEBAPI.Controllers
         {
             try
             {
+                _logger.LogInformation("In " + this.GetType() + " call FilmsService.GetWithDetailsById()");
                 var Result = await _serviceManager.FilmsService.GetWithDetailsById(id);
                 return Ok(Result);
             }
@@ -107,6 +122,7 @@ namespace EFCoreCodeFirstSampleWEBAPI.Controllers
         {
             try
             {
+                _logger.LogInformation("In " + this.GetType() + " call FilmsService.Post()");
                 var filmsDtoPrint = await _serviceManager.FilmsService.Post(filmsDto);
                 return CreatedAtRoute(
                       "FilmById",
@@ -137,6 +153,7 @@ namespace EFCoreCodeFirstSampleWEBAPI.Controllers
                 {
                     return BadRequest("Invalid model object");
                 }
+                _logger.LogInformation("In " + this.GetType() + " call FilmsService.Put()");
                 await _serviceManager.FilmsService.Put(id, filmsDto);
                 return NoContent();
             }
@@ -163,6 +180,7 @@ namespace EFCoreCodeFirstSampleWEBAPI.Controllers
         {
             try
             {
+                _logger.LogInformation("In " + this.GetType() + " call FilmsService.Delete()");
                 await _serviceManager.FilmsService.Delete(id);
                 return NoContent();
             }

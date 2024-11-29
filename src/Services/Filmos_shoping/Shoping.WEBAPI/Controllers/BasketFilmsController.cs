@@ -38,7 +38,7 @@ namespace AppMyFilm.WEBAPI.Controllers
 
         [Route("ByFilm/{Id}")]
         [HttpGet]
-        public async Task<IActionResult> GetByFilm(long Id)
+        public async Task<IActionResult> GetByFilm(int Id)
         {
             try
             {
@@ -53,7 +53,7 @@ namespace AppMyFilm.WEBAPI.Controllers
 
         [Route("ByUser/{Id}")]
         [HttpGet]
-        public async Task<IActionResult> GetByUser(long Id)
+        public async Task<IActionResult> GetByUser(int Id)
         {
             try
             {
@@ -102,7 +102,7 @@ namespace AppMyFilm.WEBAPI.Controllers
 
         [Route("AllBy/{idUser}")]
         [HttpDelete]
-        public async Task<IActionResult> Delete(long idUser)
+        public async Task<IActionResult> Delete(int idUser)
         {
             try
             {
@@ -116,7 +116,7 @@ namespace AppMyFilm.WEBAPI.Controllers
         }
 
         [HttpDelete("{idFilm}/{idUser}")]
-        public async Task<IActionResult> Delete(long idFilm, long idUser)
+        public async Task<IActionResult> Delete(int idFilm, int idUser)
         {
             try
             {

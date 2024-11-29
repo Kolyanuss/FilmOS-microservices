@@ -1,17 +1,17 @@
+using Basket.API.GrpcServices;
 using Basket.API.Repositories;
 using Basket.API.Repositories.Interfaces;
+using Grpc.Net.Client;
+using Grpc.Net.ClientFactory;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Shoping.GRPC.Protos;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Net.Http;
 
 namespace Basket.API
 {
@@ -26,14 +26,31 @@ namespace Basket.API
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {            
+        {
+            // Redis Configuration
             services.AddStackExchangeRedisCache(options =>
             {
                 options.Configuration = Configuration.GetValue<string>("CacheSettings:ConnectionString");
             });
 
+            // General Configuration
             services.AddScoped<IBasketRepository, BasketRepository>();
+            services.AddAutoMapper(typeof(Startup));
 
+            // Grpc Configuration
+            
+            services.AddGrpcClient<BasketProto.BasketProtoClient>
+                (o => o.Address = new Uri(Configuration["GrpcSettings:BasketUrl"]))
+                .ConfigurePrimaryHttpMessageHandler(() =>
+                {
+                    var httpHandler = new HttpClientHandler();
+                    httpHandler.ServerCertificateCustomValidationCallback =
+                        HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+                    return httpHandler;
+                });
+            services.AddScoped<BasketGrscService>();
+
+            // Swagger Configuration
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -53,6 +70,7 @@ namespace Basket.API
 
             app.UseRouting();
 
+            //app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

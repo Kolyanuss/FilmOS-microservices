@@ -4,6 +4,7 @@ using EFCoreCodeFirstSampleWEBAPI.BLL.Interfaces.ISQLServices;
 using EFCoreCodeFirstSampleWEBAPI.BLL.Services.SQLServices;
 using EFCoreCodeFirstSampleWEBAPI.DAL.Interfaces;
 using MassTransit;
+using Microsoft.Extensions.Logging;
 using System;
 
 namespace EFCoreCodeFirstSampleWEBAPI.BLL.ServiceWrapper
@@ -13,9 +14,9 @@ namespace EFCoreCodeFirstSampleWEBAPI.BLL.ServiceWrapper
         private readonly Lazy<IFilmsService> _lazyFilmService;
         private readonly Lazy<IUsersService> _lazyUserService;
         private readonly Lazy<IFilmsUsersService> _lazyFilmUserService;
-        public ServiceManager(IRepositoryWrapper repositoryManager, IMapper mapper, IPublishEndpoint publishEndpoint)
+        public ServiceManager(IRepositoryWrapper repositoryManager, IMapper mapper, IPublishEndpoint publishEndpoint, ILogger<FilmsService> logger)
         {
-            _lazyFilmService = new Lazy<IFilmsService>(() => new FilmsService(repositoryManager, mapper, publishEndpoint));
+            _lazyFilmService = new Lazy<IFilmsService>(() => new FilmsService(repositoryManager, mapper, publishEndpoint, logger));
             _lazyUserService = new Lazy<IUsersService>(() => new UsersService(repositoryManager, mapper, publishEndpoint));
             _lazyFilmUserService = new Lazy<IFilmsUsersService>(() => new FilmsUsersService(repositoryManager, mapper));
         }
